@@ -1,0 +1,31 @@
+{
+    "name": "alex-kalanis/kw_files",
+    "description": "Accessing stored entries as volume",
+    "keywords": [
+        "files",
+        "file",
+        "volume"
+    ],
+    "license": "BSD-3-Clause",
+    "type": "library",
+    "require": {
+        "ext-mbstring": "*",
+        "php": ">=7.2.0"
+    },
+    "require-dev": {
+        "alex-kalanis/kw_storage": ">=2.3",
+        "phpunit/phpunit": ">=7.2"
+    },
+    "suggest": {
+        "alex-kalanis/kw_storage": "Local storage for accessing resources"
+    },
+    "autoload": {
+        "psr-4": {
+            "kalanis\\kw_files\\": "php-src/"
+        }
+    },
+    "scripts": {
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
