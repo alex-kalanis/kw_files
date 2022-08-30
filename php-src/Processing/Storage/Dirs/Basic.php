@@ -8,7 +8,7 @@ use kalanis\kw_files\Interfaces\IFLTranslations;
 use kalanis\kw_files\Interfaces\ITypes;
 use kalanis\kw_files\Node;
 use kalanis\kw_files\Translations;
-use kalanis\kw_storage\Interfaces\IStorage;
+use kalanis\kw_storage\Storage\Storage;
 use kalanis\kw_storage\StorageException;
 
 
@@ -23,10 +23,10 @@ class Basic extends ADirs
 
     /** @var IFLTranslations */
     protected $lang = null;
-    /** @var IStorage */
+    /** @var Storage */
     protected $storage = null;
 
-    public function __construct(IStorage $storage, ?IFLTranslations $lang = null)
+    public function __construct(Storage $storage, ?IFLTranslations $lang = null)
     {
         $this->storage = $storage;
         $this->lang = $lang ?? new Translations();
@@ -34,8 +34,8 @@ class Basic extends ADirs
 
     public function createDir(array $entry, bool $deep = false): bool
     {
+        $entryPath = $this->compactName($entry, $this->getStorageSeparator());
         try {
-            $entryPath = $this->compactName($entry, $this->getStorageSeparator());
             if ($this->storage->exists($entryPath)) {
                 return $this->isNode($entryPath);
             }
@@ -51,14 +51,14 @@ class Basic extends ADirs
                 } else {
                     if ($deep) {
                         // create deep tree
-                        $this->storage->save($subNodeName, static::STORAGE_NODE_KEY);
+                        $this->storage->write($subNodeName, static::STORAGE_NODE_KEY);
                     } else {
                         // cannot create in shallow tree
                         return false;
                     }
                 }
             }
-            return $this->storage->save($entryPath, static::STORAGE_NODE_KEY);
+            return $this->storage->write($entryPath, static::STORAGE_NODE_KEY);
         } catch (StorageException $ex) {
             throw new FilesException($this->lang->flCannotCreateDir($entryPath), $ex->getCode(), $ex);
         }
@@ -118,10 +118,10 @@ class Basic extends ADirs
                 return false;
             }
             $paths = $this->storage->lookup($src);
-            $this->storage->save($dst, self::STORAGE_NODE_KEY);
+            $this->storage->write($dst, self::STORAGE_NODE_KEY);
             foreach ($paths as $path) {
                 $updName = $dst . mb_substr($path, 0, mb_strlen($src));
-                $this->storage->save($updName, $this->storage->load($path));
+                $this->storage->write($updName, $this->storage->read($path));
             }
             return true;
         } catch (StorageException $ex) {
@@ -141,10 +141,10 @@ class Basic extends ADirs
                 return false;
             }
             $paths = $this->storage->lookup($src);
-            $this->storage->save($dst, self::STORAGE_NODE_KEY);
+            $this->storage->write($dst, self::STORAGE_NODE_KEY);
             foreach ($paths as $path) {
                 $updName = $dst . mb_substr($path, 0, mb_strlen($src));
-                $this->storage->save($updName, $this->storage->load($path));
+                $this->storage->write($updName, $this->storage->read($path));
                 $this->storage->remove($path);
             }
             return $this->storage->remove($src);
@@ -184,7 +184,7 @@ class Basic extends ADirs
      */
     protected function isNode(string $entry): bool
     {
-        return static::STORAGE_NODE_KEY === $this->storage->load($entry);
+        return static::STORAGE_NODE_KEY === $this->storage->read($entry);
     }
 
     /**
@@ -195,7 +195,7 @@ class Basic extends ADirs
      */
     protected function getSize(string $file): int
     {
-        $content = $this->storage->load($file);
+        $content = $this->storage->read($file);
         if (is_resource($content)) {
             // a bit workaround
             $tempStream = fopen("php://temp", "w+b");

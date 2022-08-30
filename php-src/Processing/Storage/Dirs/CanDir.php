@@ -41,15 +41,31 @@ class CanDir extends ADirs
         }
     }
 
-    public function readDir(array $entry, bool $loadRecursive = false, bool $wantSize = false): array
+    public function readDir(array $entry, bool $loadRecursive = false, bool $wantSize = false, bool $wantFirst = true): array
     {
         $entryPath = $this->compactName($entry, $this->getStorageSeparator());
         try {
+            if (!$this->storage->isDir($entryPath)) {
+                throw new FilesException($this->lang->flCannotReadDir($entryPath));
+            }
             $files = [];
             foreach ($this->storage->lookup($entryPath) as $item) {
-                $currentPath = $this->compactName($entry + [$item], $this->getStorageSeparator());
+                if ('..' == $item) {
+                    continue;
+                }
+                $currentPath = $this->compactName(array_merge($entry, [$item]), $this->getStorageSeparator());
                 $sub = new Node();
-                if ($this->storage->isDir($currentPath)) {
+                if ('.' == $item) {
+                    if (!$wantFirst) {
+                        continue;
+                    }
+
+                    $sub->setData(
+                        $entry,
+                        0,
+                        ITypes::TYPE_DIR
+                    );
+                } elseif ($this->storage->isDir($currentPath)) {
                     $sub->setData(
                         $this->expandName($currentPath),
                         0,
@@ -64,6 +80,9 @@ class CanDir extends ADirs
                     );
                 }
                 $files[] = $sub;
+                if ($loadRecursive && $sub->isDir() && ('.' !== $item)) {
+                    $files = array_merge($files, $this->readDir(array_merge($entry, [$item]), $loadRecursive, $wantSize, false));
+                }
             }
             return $files;
         } catch (StorageException $ex) {
@@ -97,7 +116,11 @@ class CanDir extends ADirs
     {
         $path = $this->compactName($entry, $this->getStorageSeparator());
         try {
-            return $this->storage->rmDir($path, $deep);
+            if ($this->storage->isDir($path)) {
+                return $this->storage->rmDir($path, $deep);
+            } else {
+                return false;
+            }
         } catch (StorageException $ex) {
             throw new FilesException($this->lang->flCannotRemoveDir($path), $ex->getCode(), $ex);
         }

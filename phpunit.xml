@@ -46,9 +46,10 @@
     <!-- rest as usual -->
     <testsuites>
         <testsuite name="ALL">
-            <directory>php-tests/BasicTests</directory>
-            <directory>php-tests/CacheTests</directory>
-            <directory>php-tests/StorageTests</directory>
+            <directory>php-tests/ProcessingTests</directory>
+            <directory>php-tests/VolumeTests</directory>
+            <directory>php-tests/StorageBasicTests</directory>
+            <directory>php-tests/StorageDirsTests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

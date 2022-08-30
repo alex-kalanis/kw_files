@@ -9,7 +9,7 @@ use kalanis\kw_files\Interfaces\IProcessFiles;
 use kalanis\kw_files\Processing\TNameFinder;
 use kalanis\kw_files\Processing\TPathTransform;
 use kalanis\kw_storage\Interfaces\IPassDirs;
-use kalanis\kw_storage\Interfaces\IStorage;
+use kalanis\kw_storage\Storage\Storage;
 use kalanis\kw_storage\StorageException;
 
 
@@ -25,20 +25,20 @@ abstract class AFiles implements IProcessFiles
 
     /** @var IFLTranslations */
     protected $lang = null;
-    /** @var IStorage|IPassDirs */
+    /** @var Storage|IPassDirs */
     protected $storage = null;
 
     public function saveFile(array $targetName, $content): bool
     {
         $path = $this->compactName($targetName, $this->getStorageSeparator());
         try {
-            return $this->storage->save($path, $content);
+            return $this->storage->write($path, $content);
         } catch (StorageException $ex) {
             throw new FilesException($this->lang->flCannotSaveFile($path), $ex->getCode(), $ex);
         }
     }
 
-    protected function getSeparator(): string
+    protected function getNameSeparator(): string
     {
         return static::FREE_NAME_SEPARATOR;
     }
@@ -46,18 +46,23 @@ abstract class AFiles implements IProcessFiles
     /**
      * @param array<string> $path
      * @param string $added
+     * @throws FilesException
      * @return bool
      */
     protected function targetExists(array $path, string $added): bool
     {
-        return $this->storage->exists($this->compactName($path, $this->getStorageSeparator()) . $added);
+        try {
+            return $this->storage->exists($this->compactName($path, $this->getStorageSeparator()) . $added);
+        } catch (StorageException $ex) {
+            throw new FilesException($ex->getMessage(), $ex->getCode(), $ex);
+        }
     }
 
     public function readFile(array $entry, ?int $offset = null, ?int $length = null)
     {
         $path = $this->compactName($entry, $this->getStorageSeparator());
         try {
-            $content = $this->storage->load($path);
+            $content = $this->storage->read($path);
             if (false === $content) {
                 throw new FilesException($this->lang->flCannotLoadFile($path));
             } elseif (is_resource($content)) {
@@ -75,11 +80,11 @@ abstract class AFiles implements IProcessFiles
                 }
             } else {
                 // shit with substr... that needed undefined params was from some java dude?!
-                if (!is_null($length) && !is_null($offset)) {
-                    return mb_substr(strval($content), $offset, $length);
+                if (!is_null($length)) {
+                    return mb_substr(strval($content), intval($offset), $length);
                 }
-                if (is_null($length)) {
-                    return mb_substr(strval($content), intval($offset));
+                if (!is_null($offset)) {
+                    return mb_substr(strval($content), $offset);
                 }
                 return strval($content);
             }

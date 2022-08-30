@@ -6,7 +6,7 @@ namespace kalanis\kw_files\Processing\Storage\Nodes;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IFLTranslations;
 use kalanis\kw_files\Translations;
-use kalanis\kw_storage\Interfaces\IStorage;
+use kalanis\kw_storage\Storage\Storage;
 use kalanis\kw_storage\StorageException;
 
 
@@ -21,10 +21,10 @@ class Basic extends ANodes
 
     /** @var IFLTranslations */
     protected $lang = null;
-    /** @var IStorage */
+    /** @var Storage */
     protected $storage = null;
 
-    public function __construct(IStorage $storage, ?IFLTranslations $lang = null)
+    public function __construct(Storage $storage, ?IFLTranslations $lang = null)
     {
         $this->storage = $storage;
         $this->lang = $lang ?? new Translations();
@@ -33,14 +33,18 @@ class Basic extends ANodes
     public function exists(array $entry): bool
     {
         $path = $this->compactName($entry, $this->getStorageSeparator());
-        return $this->storage->exists($path);
+        try {
+            return $this->storage->exists($path);
+        } catch (StorageException $ex) {
+            throw new FilesException($this->lang->flCannotProcessNode($path), $ex->getCode(), $ex);
+        }
     }
 
     public function isDir(array $entry): bool
     {
+        $path = $this->compactName($entry, $this->getStorageSeparator());
         try {
-            $path = $this->compactName($entry, $this->getStorageSeparator());
-            return static::STORAGE_NODE_KEY === $this->storage->load($path);
+            return static::STORAGE_NODE_KEY === $this->storage->read($path);
         } catch (StorageException $ex) {
             throw new FilesException($this->lang->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
@@ -48,9 +52,9 @@ class Basic extends ANodes
 
     public function isFile(array $entry): bool
     {
+        $path = $this->compactName($entry, $this->getStorageSeparator());
         try {
-            $path = $this->compactName($entry, $this->getStorageSeparator());
-            return static::STORAGE_NODE_KEY !== $this->storage->load($path);
+            return static::STORAGE_NODE_KEY !== $this->storage->read($path);
         } catch (StorageException $ex) {
             throw new FilesException($this->lang->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
@@ -58,9 +62,9 @@ class Basic extends ANodes
 
     public function size(array $entry): ?int
     {
+        $path = $this->compactName($entry, $this->getStorageSeparator());
         try {
-            $path = $this->compactName($entry, $this->getStorageSeparator());
-            $content = $this->storage->load($path);
+            $content = $this->storage->read($path);
             if (is_resource($content)) {
                 // a bit workaround
                 $tempStream = fopen("php://temp", "w+b");

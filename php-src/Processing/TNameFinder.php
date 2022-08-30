@@ -21,13 +21,13 @@ trait TNameFinder
             return $this->compactName($name) . $suffix;
         }
         $i = 0;
-        while ($this->targetExists($name, $this->getSeparator() . strval($i) . $suffix)) {
+        while ($this->targetExists($name, $this->getNameSeparator() . strval($i) . $suffix)) {
             $i++;
         }
-        return $this->compactName($name) . $this->getSeparator() . strval($i) . $suffix;
+        return $this->compactName($name) . $this->getNameSeparator() . strval($i) . $suffix;
     }
 
-    abstract protected function getSeparator(): string;
+    abstract protected function getNameSeparator(): string;
 
     /**
      * @param array<string> $path
