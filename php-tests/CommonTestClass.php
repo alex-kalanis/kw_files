@@ -1,5 +1,6 @@
 <?php
 
+use kalanis\kw_files\Node;
 use PHPUnit\Framework\TestCase;
 
 
@@ -9,4 +10,13 @@ use PHPUnit\Framework\TestCase;
  */
 class CommonTestClass extends TestCase
 {
+    public function sortingPaths(Node $a, Node $b): int
+    {
+        return $this->fullPath($a) <=> $this->fullPath($b);
+    }
+
+    protected function fullPath(Node $node): string
+    {
+        return implode(DIRECTORY_SEPARATOR, $node->getPath());
+    }
 }

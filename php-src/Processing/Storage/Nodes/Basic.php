@@ -32,7 +32,7 @@ class Basic extends ANodes
 
     public function exists(array $entry): bool
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
             return $this->storage->exists($path);
         } catch (StorageException $ex) {
@@ -42,9 +42,9 @@ class Basic extends ANodes
 
     public function isDir(array $entry): bool
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
-            return static::STORAGE_NODE_KEY === $this->storage->read($path);
+            return $this->storage->exists($path) && static::STORAGE_NODE_KEY === $this->storage->read($path);
         } catch (StorageException $ex) {
             throw new FilesException($this->lang->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
@@ -52,9 +52,9 @@ class Basic extends ANodes
 
     public function isFile(array $entry): bool
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
-            return static::STORAGE_NODE_KEY !== $this->storage->read($path);
+            return $this->storage->exists($path) && static::STORAGE_NODE_KEY !== $this->storage->read($path);
         } catch (StorageException $ex) {
             throw new FilesException($this->lang->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
@@ -62,20 +62,27 @@ class Basic extends ANodes
 
     public function size(array $entry): ?int
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
+            if (!$this->storage->exists($path)) {
+                return null;
+            }
             $content = $this->storage->read($path);
             if (is_resource($content)) {
                 // a bit workaround
                 $tempStream = fopen("php://temp", "w+b");
                 if (false === $tempStream) {
-                    throw new FilesException($this->lang->flCannotGetSize($path));
+                    // @codeCoverageIgnoreStart
+                    throw new FilesException($this->lang->flCannotLoadFile($path));
                 }
+                // @codeCoverageIgnoreEnd
                 rewind($content);
                 $size = stream_copy_to_stream($content, $tempStream, -1, 0);
                 if (false === $size) {
+                    // @codeCoverageIgnoreStart
                     throw new FilesException($this->lang->flCannotGetSize($path));
                 }
+                // @codeCoverageIgnoreEnd
                 return intval($size);
             } else {
                 return strlen(strval($content));

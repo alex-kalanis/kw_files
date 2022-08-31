@@ -25,8 +25,8 @@ class Basic extends AFiles
 
     public function copyFile(array $source, array $dest): bool
     {
-        $src = $this->compactName($source, $this->getStorageSeparator());
-        $dst = $this->compactName($dest, $this->getStorageSeparator());
+        $src = $this->getStorageSeparator() . $this->filledName($this->compactName($source, $this->getStorageSeparator()));
+        $dst = $this->getStorageSeparator() . $this->filledName($this->compactName($dest, $this->getStorageSeparator()));
         try {
             return $this->storage->write($dst, $this->storage->read($src));
         } catch (StorageException $ex) {
@@ -36,8 +36,8 @@ class Basic extends AFiles
 
     public function moveFile(array $source, array $dest): bool
     {
-        $this->copyFile($source, $dest);
-        $this->deleteFile($source);
-        return true;
+        $v1 = $this->copyFile($source, $dest);
+        $v2 = $this->deleteFile($source);
+        return $v1 && $v2;
     }
 }

@@ -30,7 +30,7 @@ abstract class AFiles implements IProcessFiles
 
     public function saveFile(array $targetName, $content): bool
     {
-        $path = $this->compactName($targetName, $this->getStorageSeparator());
+        $path = $this->filledName($this->compactName($targetName, $this->getStorageSeparator()));
         try {
             return $this->storage->write($path, $content);
         } catch (StorageException $ex) {
@@ -52,7 +52,8 @@ abstract class AFiles implements IProcessFiles
     protected function targetExists(array $path, string $added): bool
     {
         try {
-            return $this->storage->exists($this->compactName($path, $this->getStorageSeparator()) . $added);
+            $path = $this->getStorageSeparator() . $this->compactName($path, $this->getStorageSeparator()) . $added;
+            return $this->storage->exists($path);
         } catch (StorageException $ex) {
             throw new FilesException($ex->getMessage(), $ex->getCode(), $ex);
         }
@@ -60,7 +61,7 @@ abstract class AFiles implements IProcessFiles
 
     public function readFile(array $entry, ?int $offset = null, ?int $length = null)
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->filledName($this->compactName($entry, $this->getStorageSeparator()));
         try {
             $content = $this->storage->read($path);
             if (false === $content) {
@@ -68,12 +69,17 @@ abstract class AFiles implements IProcessFiles
             } elseif (is_resource($content)) {
                 if (!is_null($length) || !is_null($offset)) {
                     $stream = fopen('php://temp', 'rb+');
+                    rewind($content);
                     if (false === $stream) {
+                        // @codeCoverageIgnoreStart
                         throw new FilesException($this->lang->flCannotLoadFile($path));
                     }
+                    // @codeCoverageIgnoreEnd
                     if (false === stream_copy_to_stream($content, $stream, (is_null($length) ? -1 : $length), intval($offset))) {
+                        // @codeCoverageIgnoreStart
                         throw new FilesException($this->lang->flCannotGetFilePart($path));
                     }
+                    // @codeCoverageIgnoreEnd
                     return $stream;
                 } else {
                     return $content;
@@ -95,7 +101,7 @@ abstract class AFiles implements IProcessFiles
 
     public function deleteFile(array $entry): bool
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->filledName($this->compactName($entry, $this->getStorageSeparator()));
         try {
             return $this->storage->remove($path);
         } catch (StorageException $ex) {
@@ -106,5 +112,12 @@ abstract class AFiles implements IProcessFiles
     protected function getStorageSeparator(): string
     {
         return DIRECTORY_SEPARATOR;
+    }
+
+    protected function filledName(string $path): string
+    {
+        $sepLen = mb_strlen($this->getStorageSeparator());
+        $beginning = mb_substr($path, 0, $sepLen);
+        return ($this->getStorageSeparator() == $beginning) ? mb_substr($path, $sepLen) : $path;
     }
 }
