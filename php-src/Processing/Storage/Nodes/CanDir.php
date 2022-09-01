@@ -26,7 +26,7 @@ class CanDir extends ANodes
 
     public function exists(array $entry): bool
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
             return $this->storage->exists($path);
         } catch (StorageException $ex) {
@@ -36,7 +36,7 @@ class CanDir extends ANodes
 
     public function isDir(array $entry): bool
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
             return $this->storage->isDir($path);
         } catch (StorageException $ex) {
@@ -46,7 +46,7 @@ class CanDir extends ANodes
 
     public function isFile(array $entry): bool
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
             return $this->storage->isFile($path);
         } catch (StorageException $ex) {
@@ -56,7 +56,7 @@ class CanDir extends ANodes
 
     public function size(array $entry): ?int
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
             return $this->storage->size($path);
         } catch (StorageException $ex) {
@@ -66,7 +66,7 @@ class CanDir extends ANodes
 
     public function created(array $entry): ?int
     {
-        $path = $this->compactName($entry, $this->getStorageSeparator());
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
             return $this->storage->created($path);
         } catch (StorageException $ex) {

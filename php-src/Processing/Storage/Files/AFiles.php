@@ -30,7 +30,7 @@ abstract class AFiles implements IProcessFiles
 
     public function saveFile(array $targetName, $content): bool
     {
-        $path = $this->filledName($this->compactName($targetName, $this->getStorageSeparator()));
+        $path = $this->getStorageSeparator() . $this->filledName($this->compactName($targetName, $this->getStorageSeparator()));
         try {
             return $this->storage->write($path, $content);
         } catch (StorageException $ex) {
@@ -101,7 +101,7 @@ abstract class AFiles implements IProcessFiles
 
     public function deleteFile(array $entry): bool
     {
-        $path = $this->filledName($this->compactName($entry, $this->getStorageSeparator()));
+        $path = $this->getStorageSeparator() . $this->filledName($this->compactName($entry, $this->getStorageSeparator()));
         try {
             return $this->storage->remove($path);
         } catch (StorageException $ex) {

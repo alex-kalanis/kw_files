@@ -21,37 +21,37 @@ abstract class AStorageTest extends CommonTestClass
 {
     protected function getNodeLib(): IProcessNodes
     {
-        DirKey::setDir($this->getTestPath() . DIRECTORY_SEPARATOR);
+        DirKey::setDir($this->getTestPath());
         return new ProcessNode(new StorageDirs(new DirKey(), new Volume()));
     }
 
     protected function getNodeFailLib(): IProcessNodes
     {
-        DirKey::setDir($this->getTestPath() . DIRECTORY_SEPARATOR);
+        DirKey::setDir($this->getTestPath());
         return new ProcessNode(new XFailStorageDirs(new DirKey(), new Volume()));
     }
 
     protected function getFileLib(): IProcessFiles
     {
-        DirKey::setDir($this->getTestPath() . DIRECTORY_SEPARATOR);
+        DirKey::setDir($this->getTestPath());
         return new ProcessFile(new StorageDirs(new DirKey(), new Volume()));
     }
 
     protected function getFileFailLib(): IProcessFiles
     {
-        DirKey::setDir($this->getTestPath() . DIRECTORY_SEPARATOR);
+        DirKey::setDir($this->getTestPath());
         return new ProcessFile(new XFailStorageDirs(new DirKey(), new Volume()));
     }
 
     protected function getDirLib(): IProcessDirs
     {
-        DirKey::setDir($this->getTestPath() . DIRECTORY_SEPARATOR);
+        DirKey::setDir($this->getTestPath());
         return new ProcessDir(new StorageDirs(new DirKey(), new Volume()));
     }
 
     protected function getDirFailLib(): IProcessDirs
     {
-        DirKey::setDir($this->getTestPath() . DIRECTORY_SEPARATOR);
+        DirKey::setDir($this->getTestPath());
         return new ProcessDir(new XFailStorageDirs(new DirKey(), new Volume()));
     }
 

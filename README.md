@@ -29,3 +29,7 @@ familiar with composer)
 4.) Extend your libraries by interfaces inside the package.
 
 5.) Just call setting and render
+
+
+Notes to self: - all entries starts internally with the separators (usually slashes). It is not necessary
+and sometimes counter-productive to add them when setting the staring dir. It behaves like prefix.

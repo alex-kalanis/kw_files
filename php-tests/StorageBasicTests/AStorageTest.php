@@ -10,7 +10,7 @@ use kalanis\kw_files\Interfaces\IProcessNodes;
 use kalanis\kw_files\Processing\Storage\ProcessDir;
 use kalanis\kw_files\Processing\Storage\ProcessFile;
 use kalanis\kw_files\Processing\Storage\ProcessNode;
-use kalanis\kw_storage\Interfaces\IStorage;
+use kalanis\kw_storage\Interfaces\ITarget;
 use kalanis\kw_storage\Storage\Key\DirKey;
 use kalanis\kw_storage\Storage\Storage;
 use kalanis\kw_storage\Storage\Target\Memory;
@@ -63,7 +63,7 @@ abstract class AStorageTest extends CommonTestClass
         return 'data' . DIRECTORY_SEPARATOR . 'tree';
     }
 
-    protected function filledMemory(): IStorage
+    protected function filledMemory(): ITarget
     {
         $res = fopen('php://memory', 'r+');
         fwrite($res, 'qwertzuiopasdfghjklyxcvbnm0123456789');

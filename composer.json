@@ -13,7 +13,7 @@
         "php": ">=7.2.0"
     },
     "require-dev": {
-        "alex-kalanis/kw_storage": ">=2.3",
+        "alex-kalanis/kw_storage": ">=3.0",
         "phpunit/phpunit": ">=7.2"
     },
     "suggest": {
