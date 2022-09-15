@@ -5,7 +5,6 @@ namespace kalanis\kw_files\Processing\Storage\Nodes;
 
 use kalanis\kw_files\FilesException;
 use kalanis\kw_storage\Interfaces\IPassDirs;
-use kalanis\kw_storage\Storage\Storage;
 use kalanis\kw_storage\StorageException;
 
 
@@ -16,7 +15,7 @@ use kalanis\kw_storage\StorageException;
  */
 class CanDir extends ANodes
 {
-    /** @var IPassDirs|Storage */
+    /** @var IPassDirs */
     protected $storage = null;
 
     public function __construct(IPassDirs $storage)

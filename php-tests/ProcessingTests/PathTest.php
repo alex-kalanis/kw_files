@@ -16,7 +16,7 @@ class PathTest extends CommonTestClass
      * @param string $to
      * @dataProvider transformProvider
      */
-    public function testPaths(array $from, string $to): void
+    public function testPaths(/** @scrutinizer ignore-unused */array $from, string $to): void
     {
         $lib = new XPath();
         $this->assertEmpty($lib->getPath());

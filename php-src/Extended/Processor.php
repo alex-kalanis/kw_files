@@ -90,7 +90,7 @@ class Processor
         if (!$thumbExists) {
             $ret &= $this->dirs->createDir($thumb, true);
         }
-        return $ret;
+        return boolval($ret);
     }
 
     /**
@@ -117,6 +117,6 @@ class Processor
         if ($thumbExists) {
             $ret &= $this->dirs->deleteDir($thumb, true);
         }
-        return $ret;
+        return boolval($ret);
     }
 }
