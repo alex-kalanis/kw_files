@@ -4,6 +4,7 @@ namespace ProcessingTests;
 
 
 use CommonTestClass;
+use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Processing\TPath;
 use kalanis\kw_files\Processing\TPathTransform;
 
@@ -26,6 +27,7 @@ class PathTest extends CommonTestClass
     /**
      * @param array<string> $from
      * @param string $to
+     * @throws FilesException
      * @dataProvider transformProvider
      */
     public function testCompactFrom(array $from, string $to): void
@@ -37,6 +39,7 @@ class PathTest extends CommonTestClass
     /**
      * @param array<string> $to
      * @param string $from
+     * @throws FilesException
      * @dataProvider transformProvider
      */
     public function testExpandFrom(array $to, string $from): void
@@ -58,6 +61,26 @@ class PathTest extends CommonTestClass
             // empty path
             [['', ], '', ],
         ];
+    }
+
+    /**
+     * @throws FilesException
+     */
+    public function testEmptyCompact(): void
+    {
+        $lib = new XPathTransform();
+        $this->expectException(FilesException::class);
+        $lib->compactName(['any', 'where'], '');
+    }
+
+    /**
+     * @throws FilesException
+     */
+    public function testEmptyExpand(): void
+    {
+        $lib = new XPathTransform();
+        $this->expectException(FilesException::class);
+        $lib->expandName('any/where', '');
     }
 }
 

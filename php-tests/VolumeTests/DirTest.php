@@ -134,6 +134,8 @@ class DirTest extends CommonTestClass
     {
         $lib = $this->getLib();
         $subList = $lib->readDir(['next_one'], true);
+        usort($subList, [$this, 'sortingPaths']);
+
         $entry = reset($subList);
         /** @var Node $entry */
         $name = array_slice($entry->getPath(), -1);
