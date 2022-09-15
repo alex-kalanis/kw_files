@@ -8,7 +8,7 @@ use kalanis\kw_files\Interfaces\IFLTranslations;
 use kalanis\kw_files\Interfaces\ITypes;
 use kalanis\kw_files\Node;
 use kalanis\kw_files\Translations;
-use kalanis\kw_storage\Storage\Storage;
+use kalanis\kw_storage\Interfaces\IStorage;
 use kalanis\kw_storage\StorageException;
 
 
@@ -23,10 +23,10 @@ class Basic extends ADirs
 
     /** @var IFLTranslations */
     protected $lang = null;
-    /** @var Storage */
+    /** @var IStorage */
     protected $storage = null;
 
-    public function __construct(Storage $storage, ?IFLTranslations $lang = null)
+    public function __construct(IStorage $storage, ?IFLTranslations $lang = null)
     {
         $this->storage = $storage;
         $this->lang = $lang ?? new Translations();
@@ -180,18 +180,20 @@ class Basic extends ADirs
         $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {
             if (!$this->storage->exists($path)) {
-                return true;
+                return false;
             }
             if (!$this->isNode($path)) {
                 return false;
             }
             $paths = $this->storage->lookup($path);
-            foreach ($paths as $path) {
-                // found something
-                if (!$deep) {
-                    return false;
+            foreach ($paths as $item) {
+                if ('' != $item) {
+                    // found something
+                    if (!$deep) {
+                        return false;
+                    }
+                    $this->storage->remove($path . $item);
                 }
-                $this->storage->remove($path);
             }
             return $this->storage->remove($path);
         } catch (StorageException $ex) {

@@ -9,7 +9,7 @@ use kalanis\kw_files\Interfaces\IProcessFiles;
 use kalanis\kw_files\Processing\TNameFinder;
 use kalanis\kw_files\Processing\TPathTransform;
 use kalanis\kw_storage\Interfaces\IPassDirs;
-use kalanis\kw_storage\Storage\Storage;
+use kalanis\kw_storage\Interfaces\IStorage;
 use kalanis\kw_storage\StorageException;
 
 
@@ -25,7 +25,7 @@ abstract class AFiles implements IProcessFiles
 
     /** @var IFLTranslations */
     protected $lang = null;
-    /** @var Storage|IPassDirs */
+    /** @var IStorage|IPassDirs */
     protected $storage = null;
 
     public function saveFile(array $targetName, $content): bool

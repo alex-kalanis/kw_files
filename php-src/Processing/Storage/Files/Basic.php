@@ -6,7 +6,7 @@ namespace kalanis\kw_files\Processing\Storage\Files;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IFLTranslations;
 use kalanis\kw_files\Translations;
-use kalanis\kw_storage\Storage\Storage;
+use kalanis\kw_storage\Interfaces\IStorage;
 use kalanis\kw_storage\StorageException;
 
 
@@ -17,7 +17,7 @@ use kalanis\kw_storage\StorageException;
  */
 class Basic extends AFiles
 {
-    public function __construct(Storage $storage, ?IFLTranslations $lang = null)
+    public function __construct(IStorage $storage, ?IFLTranslations $lang = null)
     {
         $this->storage = $storage;
         $this->lang = $lang ?? new Translations();

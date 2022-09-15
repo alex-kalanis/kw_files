@@ -182,6 +182,16 @@ class DirTest extends AStorageTest
     {
         $lib = $this->getDirLib();
         $this->assertFalse($lib->deleteDir(['other2.txt']));
-        $this->assertTrue($lib->deleteDir(['more']));
+        $this->assertFalse($lib->deleteDir(['more']));
+    }
+
+    /**
+     * @throws FilesException
+     */
+    public function testDeepDeleteFail(): void
+    {
+        $lib = $this->getDirLib();
+        $this->assertTrue($lib->createDir(['some', 'more'], true));
+        $this->assertFalse($lib->deleteDir(['some']));
     }
 }
