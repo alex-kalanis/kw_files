@@ -30,8 +30,8 @@ class FileTest extends CommonTestClass
     public function testFreeName(): void
     {
         $lib = $this->getLib();
-        $this->assertEquals('no-change.nope', $lib->findFreeName(['no-change'], '.nope'));
-        $this->assertEquals('other1_0.txt', $lib->findFreeName(['other1'], '.txt'));
+        $this->assertEquals('no-change.nope', $lib->findFreeName([], 'no-change', '.nope'));
+        $this->assertEquals('other1_0.txt', $lib->findFreeName([], 'other1', '.txt'));
     }
 
     /**

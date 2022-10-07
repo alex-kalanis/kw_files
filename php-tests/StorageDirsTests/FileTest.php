@@ -27,8 +27,8 @@ class FileTest extends AStorageTest
     public function testFreeName(): void
     {
         $lib = $this->getFileLib();
-        $this->assertEquals('no-change.nope', $lib->findFreeName(['no-change'], '.nope'));
-        $this->assertEquals('other1_0.txt', $lib->findFreeName(['other1'], '.txt'));
+        $this->assertEquals('no-change.nope', $lib->findFreeName([], 'no-change', '.nope'));
+        $this->assertEquals('other1_0.txt', $lib->findFreeName([], 'other1', '.txt'));
     }
 
     /**

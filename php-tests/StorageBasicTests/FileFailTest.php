@@ -15,7 +15,7 @@ class FileFailTest extends AStorageTest
     {
         $lib = $this->getFileFailLib();
         $this->expectException(FilesException::class);
-        $lib->findFreeName(['no-change'], '.nope');
+        $lib->findFreeName([], 'no-change', '.nope');
     }
 
     /**
