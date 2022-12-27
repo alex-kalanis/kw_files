@@ -11,16 +11,6 @@ class FileTest extends AStorageTest
     /**
      * @throws FilesException
      */
-    public function testFreeName(): void
-    {
-        $lib = $this->getFileLib();
-        $this->assertEquals('no-change.nope', $lib->findFreeName([], 'no-change', '.nope'));
-        $this->assertEquals('other1_0.txt', $lib->findFreeName([], 'other1', '.txt'));
-    }
-
-    /**
-     * @throws FilesException
-     */
     public function testRead(): void
     {
         $lib = $this->getFileLib();

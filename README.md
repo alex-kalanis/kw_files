@@ -17,7 +17,7 @@ in classical filesystems.
 ```
 {
     "require": {
-        "alex-kalanis/kw_files": "1.0"
+        "alex-kalanis/kw_files": "2.0"
     }
 }
 ```
@@ -37,6 +37,11 @@ familiar with composer)
 4.) Extend your libraries by interfaces inside the package.
 
 5.) Just call setting and render
+
+
+### Changes
+
+- v2 has difference in interface and class tree building for free name lookup
 
 
 Notes to self: - all entries starts internally with the separators (usually slashes). It is not necessary
