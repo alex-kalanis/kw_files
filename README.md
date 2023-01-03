@@ -17,7 +17,7 @@ in classical filesystems.
 ```
 {
     "require": {
-        "alex-kalanis/kw_files": "2.0"
+        "alex-kalanis/kw_files": "2.1"
     }
 }
 ```
