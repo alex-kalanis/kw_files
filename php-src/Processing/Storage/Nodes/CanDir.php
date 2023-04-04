@@ -33,6 +33,26 @@ class CanDir extends ANodes
         }
     }
 
+    public function isReadable(array $entry): bool
+    {
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
+        try {
+            return $this->storage->isReadable($path);
+        } catch (StorageException $ex) {
+            throw new FilesException($ex->getMessage(), $ex->getCode(), $ex);
+        }
+    }
+
+    public function isWritable(array $entry): bool
+    {
+        $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
+        try {
+            return $this->storage->isWritable($path);
+        } catch (StorageException $ex) {
+            throw new FilesException($ex->getMessage(), $ex->getCode(), $ex);
+        }
+    }
+
     public function isDir(array $entry): bool
     {
         $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());

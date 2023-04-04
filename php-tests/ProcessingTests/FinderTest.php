@@ -102,6 +102,16 @@ class XNameFinder implements IProcessNodes
         return in_array($this->compactName($entry), $this->knownNames);
     }
 
+    public function isReadable(array $entry): bool
+    {
+        return false;
+    }
+
+    public function isWritable(array $entry): bool
+    {
+        return false;
+    }
+
     public function isDir(array $entry): bool
     {
         return false;

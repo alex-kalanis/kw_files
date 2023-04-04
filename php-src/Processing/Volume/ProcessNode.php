@@ -29,6 +29,16 @@ class ProcessNode implements IProcessNodes
         return @file_exists($this->fullPath($entry));
     }
 
+    public function isReadable(array $entry): bool
+    {
+        return @is_readable($this->fullPath($entry));
+    }
+
+    public function isWritable(array $entry): bool
+    {
+        return @is_writable($this->fullPath($entry));
+    }
+
     public function isDir(array $entry): bool
     {
         return @is_dir($this->fullPath($entry));

@@ -25,6 +25,20 @@ interface IProcessNodes
      * @throws FilesException
      * @return bool
      */
+    public function isReadable(array $entry): bool;
+
+    /**
+     * @param string[] $entry
+     * @throws FilesException
+     * @return bool
+     */
+    public function isWritable(array $entry): bool;
+
+    /**
+     * @param string[] $entry
+     * @throws FilesException
+     * @return bool
+     */
     public function isDir(array $entry): bool;
 
     /**

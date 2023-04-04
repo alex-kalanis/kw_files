@@ -20,8 +20,12 @@ class NodeTest extends AStorageTest
         $this->assertTrue($lib->exists(['sub', 'dummy3.txt']));
 
         $this->assertFalse($lib->isDir(['unknown']));
+        $this->assertTrue($lib->isReadable(['unknown'])); // because cannot check real status on flat k-v storage
+        $this->assertTrue($lib->isWritable(['unknown']));
         $this->assertFalse($lib->isDir(['dummy2.txt']));
         $this->assertTrue($lib->isDir(['sub']));
+        $this->assertTrue($lib->isReadable(['sub']));
+        $this->assertTrue($lib->isWritable(['sub']));
 
         $this->assertFalse($lib->isFile(['unknown']));
         $this->assertTrue($lib->isFile(['dummy2.txt']));

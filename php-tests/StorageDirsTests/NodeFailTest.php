@@ -41,6 +41,26 @@ class NodeFailTest extends AStorageTest
     /**
      * @throws FilesException
      */
+    public function testReadable(): void
+    {
+        $lib = $this->getNodeFailLib();
+        $this->expectException(FilesException::class);
+        $lib->isReadable(['unknown']);
+    }
+
+    /**
+     * @throws FilesException
+     */
+    public function testWritable(): void
+    {
+        $lib = $this->getNodeFailLib();
+        $this->expectException(FilesException::class);
+        $lib->isWritable(['unknown']);
+    }
+
+    /**
+     * @throws FilesException
+     */
     public function testSize(): void
     {
         $lib = $this->getNodeFailLib();

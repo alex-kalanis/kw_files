@@ -40,6 +40,16 @@ class Basic extends ANodes
         }
     }
 
+    public function isReadable(array $entry): bool
+    {
+        return true;
+    }
+
+    public function isWritable(array $entry): bool
+    {
+        return true;
+    }
+
     public function isDir(array $entry): bool
     {
         $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());

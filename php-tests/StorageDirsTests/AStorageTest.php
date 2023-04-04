@@ -114,6 +114,16 @@ class XFailStorageDirs extends StorageDirs
         throw new StorageException('mock');
     }
 
+    public function isReadable(string $key): bool
+    {
+        throw new StorageException('mock');
+    }
+
+    public function isWritable(string $key): bool
+    {
+        throw new StorageException('mock');
+    }
+
     public function mkDir(string $key, bool $recursive = false): bool
     {
         throw new StorageException('mock');

@@ -22,11 +22,19 @@ class NodeTest extends CommonTestClass
         $this->assertTrue($lib->exists(['sub', 'dummy3.txt']));
 
         $this->assertFalse($lib->isDir(['unknown']));
+        $this->assertFalse($lib->isReadable(['unknown']));
+        $this->assertFalse($lib->isWritable(['unknown']));
         $this->assertFalse($lib->isDir(['dummy2.txt']));
         $this->assertTrue($lib->isDir(['sub']));
+        $this->assertTrue($lib->isReadable(['sub']));
+        $this->assertTrue($lib->isWritable(['sub']));
 
         $this->assertFalse($lib->isFile(['unknown']));
+        $this->assertFalse($lib->isReadable(['unknown']));
+        $this->assertFalse($lib->isWritable(['unknown']));
         $this->assertTrue($lib->isFile(['dummy2.txt']));
+        $this->assertTrue($lib->isReadable(['dummy2.txt']));
+        $this->assertTrue($lib->isWritable(['dummy2.txt']));
         $this->assertFalse($lib->isFile(['sub']));
 
         $this->assertNull($lib->size(['unknown']));
