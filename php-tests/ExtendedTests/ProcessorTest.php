@@ -4,10 +4,12 @@ namespace ExtendedTests;
 
 
 use CommonTestClass;
+use kalanis\kw_files\Access\Factory;
 use kalanis\kw_files\Extended\Config;
 use kalanis\kw_files\Extended\Processor;
 use kalanis\kw_files\FilesException;
-use kalanis\kw_files\Processing\Storage;
+use kalanis\kw_paths\PathsException;
+use kalanis\kw_storage\Storage\Storage;
 use kalanis\kw_storage\Storage\Key\DefaultKey;
 use kalanis\kw_storage\Storage\Target\Memory;
 
@@ -16,11 +18,11 @@ class ProcessorTest extends CommonTestClass
 {
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testProcess(): void
     {
-        $storage = new \kalanis\kw_storage\Storage\Storage(new DefaultKey(), new Memory());
-        $lib = new Processor(new Storage\ProcessDir($storage), new Storage\ProcessNode($storage), new Config());
+        $lib = new Processor(XAccessFactory::init()->getClass(new Storage(new DefaultKey(), new Memory())), new Config());
 
         $this->assertFalse($lib->exists(['foo', 'bar']));
         $this->assertFalse($lib->dirExists(['foo', 'bar']));
@@ -44,77 +46,75 @@ class ProcessorTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testMakeThumbExists(): void
     {
         $config = new Config();
-        $memory = new Memory();
-        $storage = new \kalanis\kw_storage\Storage\Storage(new DefaultKey(), $memory);
-        $dir = new Storage\ProcessDir($storage);
-        $file = new Storage\ProcessFile($storage);
-        $node = new Storage\ProcessNode($storage);
-        $lib = new Processor($dir, $node, $config);
+        $access = XAccessFactory::init()->getClass(new Storage(new DefaultKey(), new Memory()));
+        $lib = new Processor($access, $config);
 
-        $this->assertFalse($node->exists(['meek']));
+        $this->assertFalse($access->exists(['meek']));
         $this->assertTrue($lib->createDir(['meek']));
-        $this->assertTrue($file->saveFile(['meek', $config->getThumbDir()], 'abcdef'));
+        $this->assertTrue($access->saveFile(['meek', $config->getThumbDir()], 'abcdef'));
         $this->assertFalse($lib->makeExtended(['meek']));
     }
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testMakeDescExists(): void
     {
         $config = new Config();
-        $memory = new Memory();
-        $storage = new \kalanis\kw_storage\Storage\Storage(new DefaultKey(), $memory);
-        $dir = new Storage\ProcessDir($storage);
-        $file = new Storage\ProcessFile($storage);
-        $node = new Storage\ProcessNode($storage);
-        $lib = new Processor($dir, $node, $config);
+        $access = XAccessFactory::init()->getClass(new Storage(new DefaultKey(), new Memory()));
+        $lib = new Processor($access, $config);
 
-        $this->assertFalse($node->exists(['meek']));
+        $this->assertFalse($access->exists(['meek']));
         $this->assertTrue($lib->createDir(['meek']));
-        $this->assertTrue($file->saveFile(['meek', $config->getDescDir()], 'abcdef'));
+        $this->assertTrue($access->saveFile(['meek', $config->getDescDir()], 'abcdef'));
         $this->assertFalse($lib->makeExtended(['meek']));
     }
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRemoveThumbExists(): void
     {
         $config = new Config();
-        $memory = new Memory();
-        $storage = new \kalanis\kw_storage\Storage\Storage(new DefaultKey(), $memory);
-        $dir = new Storage\ProcessDir($storage);
-        $file = new Storage\ProcessFile($storage);
-        $node = new Storage\ProcessNode($storage);
-        $lib = new Processor($dir, $node, $config);
+        $access = XAccessFactory::init()->getClass(new Storage(new DefaultKey(), new Memory()));
+        $lib = new Processor($access, $config);
 
-        $this->assertFalse($node->exists(['meek']));
+        $this->assertFalse($access->exists(['meek']));
         $this->assertTrue($lib->createDir(['meek']));
-        $this->assertTrue($file->saveFile(['meek', $config->getThumbDir()], 'abcdef'));
+        $this->assertTrue($access->saveFile(['meek', $config->getThumbDir()], 'abcdef'));
         $this->assertFalse($lib->removeExtended(['meek']));
     }
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRemoveDescExists(): void
     {
         $config = new Config();
-        $memory = new Memory();
-        $storage = new \kalanis\kw_storage\Storage\Storage(new DefaultKey(), $memory);
-        $dir = new Storage\ProcessDir($storage);
-        $file = new Storage\ProcessFile($storage);
-        $node = new Storage\ProcessNode($storage);
-        $lib = new Processor($dir, $node, $config);
+        $storage = new Storage(new DefaultKey(), new Memory());
+        $access = XAccessFactory::init()->getClass($storage);
+        $lib = new Processor($access, $config);
 
-        $this->assertFalse($node->exists(['meek']));
+        $this->assertFalse($access->exists(['meek']));
         $this->assertTrue($lib->createDir(['meek']));
-        $this->assertTrue($file->saveFile(['meek', $config->getDescDir()], 'abcdef'));
+        $this->assertTrue($access->saveFile(['meek', $config->getDescDir()], 'abcdef'));
         $this->assertFalse($lib->removeExtended(['meek']));
+    }
+}
+
+
+class XAccessFactory extends Factory
+{
+    public static function init(): self
+    {
+        return new self();
     }
 }

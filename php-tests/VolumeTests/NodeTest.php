@@ -6,12 +6,14 @@ namespace VolumeTests;
 use CommonTestClass;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Processing\Volume\ProcessNode;
+use kalanis\kw_paths\PathsException;
 
 
 class NodeTest extends CommonTestClass
 {
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testThrough(): void
     {

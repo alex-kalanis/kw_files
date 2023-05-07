@@ -40,4 +40,13 @@ class Basic extends AFiles
         $v2 = $this->deleteFile($source);
         return $v1 && $v2;
     }
+
+    /**
+     * @return string
+     * @codeCoverageIgnore only when path fails
+     */
+    protected function noDirectoryDelimiterSet(): string
+    {
+        return $this->lang->flNoDirectoryDelimiterSet();
+    }
 }

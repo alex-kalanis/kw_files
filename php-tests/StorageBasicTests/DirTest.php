@@ -6,12 +6,14 @@ namespace StorageBasicTests;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\ITypes;
 use kalanis\kw_files\Node;
+use kalanis\kw_paths\PathsException;
 
 
 class DirTest extends AStorageTest
 {
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testCreate(): void
     {
@@ -25,6 +27,7 @@ class DirTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRead1(): void
     {
@@ -86,6 +89,7 @@ class DirTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRead2(): void
     {
@@ -113,6 +117,7 @@ class DirTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRead3(): void
     {
@@ -135,6 +140,30 @@ class DirTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
+     */
+    public function testRead4(): void
+    {
+        $lib = $this->getDirTreeLib();
+        $subList = $lib->readDir([], false);
+        $entry = reset($subList);
+        /** @var Node $entry */
+        $name = array_slice($entry->getPath(), -1);
+        $this->assertEquals('', reset($name));
+        $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
+
+        $entry = next($subList);
+        $name = array_slice($entry->getPath(), -1);
+        $this->assertEquals('data', reset($name));
+        $this->assertEquals(0, $entry->getSize());
+        $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
+
+        $this->assertFalse(next($subList));
+    }
+
+    /**
+     * @throws FilesException
+     * @throws PathsException
      */
     public function testReadFail(): void
     {
@@ -145,6 +174,7 @@ class DirTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testCopyMoveDelete(): void
     {
@@ -157,6 +187,7 @@ class DirTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testCopyFail(): void
     {
@@ -167,6 +198,7 @@ class DirTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testMoveFail(): void
     {
@@ -177,6 +209,7 @@ class DirTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testDeleteFail(): void
     {
@@ -187,6 +220,7 @@ class DirTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testDeepDeleteFail(): void
     {

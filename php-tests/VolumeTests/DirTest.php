@@ -9,6 +9,7 @@ use kalanis\kw_files\Interfaces\IProcessDirs;
 use kalanis\kw_files\Interfaces\ITypes;
 use kalanis\kw_files\Node;
 use kalanis\kw_files\Processing\Volume\ProcessDir;
+use kalanis\kw_paths\PathsException;
 
 
 class DirTest extends CommonTestClass
@@ -55,6 +56,7 @@ class DirTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testCreate(): void
     {
@@ -68,6 +70,7 @@ class DirTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRead1(): void
     {
@@ -129,6 +132,7 @@ class DirTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRead2(): void
     {
@@ -158,6 +162,7 @@ class DirTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRead3(): void
     {
@@ -180,6 +185,7 @@ class DirTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testReadFail(): void
     {
@@ -190,6 +196,7 @@ class DirTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testCopyMoveDelete(): void
     {
@@ -200,6 +207,10 @@ class DirTest extends CommonTestClass
         $this->assertFalse($lib->deleteDir(['another']));
     }
 
+    /**
+     * @throws PathsException
+     * @return IProcessDirs
+     */
     protected function getLib(): IProcessDirs
     {
         return new ProcessDir($this->getTestPath());

@@ -48,4 +48,13 @@ class CanDir extends AFiles
             throw new FilesException($this->lang->flCannotMoveFile($src, $dst), $ex->getCode(), $ex);
         }
     }
+
+    /**
+     * @return string
+     * @codeCoverageIgnore only when path fails
+     */
+    protected function noDirectoryDelimiterSet(): string
+    {
+        return $this->lang->flNoDirectoryDelimiterSet();
+    }
 }

@@ -7,7 +7,8 @@ use CommonTestClass;
 use kalanis\kw_files\Extended\FindFreeName;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IProcessNodes;
-use kalanis\kw_files\Processing\TPathTransform;
+use kalanis\kw_paths\Extras\TPathTransform;
+use kalanis\kw_paths\PathsException;
 
 
 class FinderTest extends CommonTestClass
@@ -18,6 +19,7 @@ class FinderTest extends CommonTestClass
      * @param string $name
      * @param string $result
      * @throws FilesException
+     * @throws PathsException
      * @dataProvider finder1Provider
      */
     public function testCompactFrom1(array $known, array $path, string $name, string $result): void
@@ -48,6 +50,7 @@ class FinderTest extends CommonTestClass
      * @param string $name
      * @param string $result
      * @throws FilesException
+     * @throws PathsException
      * @dataProvider finder2Provider
      */
     public function testCompactFrom2(array $known, array $path, string $name, string $result): void
@@ -130,5 +133,10 @@ class XNameFinder implements IProcessNodes
     public function created(array $entry): ?int
     {
         return null;
+    }
+
+    protected function noDirectoryDelimiterSet(): string
+    {
+        return 'mock no dir';
     }
 }

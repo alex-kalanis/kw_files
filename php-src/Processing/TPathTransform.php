@@ -10,6 +10,8 @@ use kalanis\kw_files\FilesException;
  * trait TPathTransform
  * @package kalanis\kw_files\Processing
  * Transform path from string to array and back
+ * @deprecated since 2023-04-04 moved
+ * @see \kalanis\kw_paths\Extras\TPathTransform
  */
 trait TPathTransform
 {

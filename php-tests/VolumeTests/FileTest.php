@@ -7,6 +7,7 @@ use CommonTestClass;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IProcessFiles;
 use kalanis\kw_files\Processing\Volume\ProcessFile;
+use kalanis\kw_paths\PathsException;
 
 
 class FileTest extends CommonTestClass
@@ -26,6 +27,7 @@ class FileTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRead(): void
     {
@@ -38,6 +40,7 @@ class FileTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testReadNonExist(): void
     {
@@ -48,6 +51,7 @@ class FileTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testSave(): void
     {
@@ -57,6 +61,7 @@ class FileTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testSaveNonWritable(): void
     {
@@ -69,6 +74,7 @@ class FileTest extends CommonTestClass
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testCopyMoveDelete(): void
     {

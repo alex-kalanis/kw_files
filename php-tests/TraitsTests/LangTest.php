@@ -1,119 +1,123 @@
 <?php
 
-namespace kalanis\kw_files;
+namespace TraitsTests;
 
 
+use CommonTestClass;
 use kalanis\kw_files\Interfaces\IFLTranslations;
+use kalanis\kw_files\Traits\TLang;
+use kalanis\kw_files\Translations;
 
 
-/**
- * Class Translations
- * @package kalanis\kw_files
- * Translations
- */
-class Translations implements IFLTranslations
+class LangTest extends CommonTestClass
+{
+    public function testPass(): void
+    {
+        $lib = new XLang();
+        $lib->setLang(new XTrans());
+        $this->assertNotEmpty($lib->getLang());
+        $this->assertInstanceOf(XTrans::class, $lib->getLang());
+        $lib->setLang(null);
+        $this->assertInstanceOf(Translations::class, $lib->getLang());
+    }
+}
+
+
+class XLang
+{
+    use TLang;
+}
+
+
+class XTrans implements IFLTranslations
 {
     public function flCannotProcessNode(string $name): string
     {
-        return 'Cannot process wanted path.';
+        return 'mock';
     }
 
     public function flCannotLoadFile(string $fileName): string
     {
-        return 'Cannot load wanted file.';
+        return 'mock';
     }
 
     public function flCannotSaveFile(string $fileName): string
     {
-        return 'Cannot save wanted file.';
+        return 'mock';
     }
 
-    /**
-     * @param string $fileName
-     * @return string
-     * @codeCoverageIgnore failing streams
-     */
     public function flCannotGetFilePart(string $fileName): string
     {
-        return 'Cannot extract part of content';
+        return 'mock';
     }
 
-    /**
-     * @param string $fileName
-     * @return string
-     * @codeCoverageIgnore failing streams
-     */
     public function flCannotGetSize(string $fileName): string
     {
-        return 'Cannot copy streams, cannot get file size';
+        return 'mock';
     }
 
     public function flCannotCopyFile(string $sourceFileName, string $destFileName): string
     {
-        return 'Cannot copy file to destination';
+        return 'mock';
     }
 
     public function flCannotMoveFile(string $sourceFileName, string $destFileName): string
     {
-        return 'Cannot move file to destination';
+        return 'mock';
     }
 
     public function flCannotRemoveFile(string $fileName): string
     {
-        return 'Cannot remove file';
+        return 'mock';
     }
 
     public function flCannotCreateDir(string $dirName): string
     {
-        return 'Cannot create directory';
+        return 'mock';
     }
 
     public function flCannotReadDir(string $dirName): string
     {
-        return 'Cannot read directory';
+        return 'mock';
     }
 
     public function flCannotCopyDir(string $sourceDirName, string $destDirName): string
     {
-        return 'Cannot copy directory to destination';
+        return 'mock';
     }
 
     public function flCannotMoveDir(string $sourceDirName, string $destDirName): string
     {
-        return 'Cannot move directory to destination';
+        return 'mock';
     }
 
     public function flCannotRemoveDir(string $dirName): string
     {
-        return 'Cannot remove directory';
+        return 'mock';
     }
 
-    /**
-     * @return string
-     * @codeCoverageIgnore only when path fails
-     */
     public function flNoDirectoryDelimiterSet(): string
     {
-        return 'You set the empty directory delimiter!';
+        return 'mock';
     }
 
     public function flNoProcessNodeSet(): string
     {
-        return 'No processing nodes library set!';
+        return 'mock';
     }
 
     public function flNoProcessFileSet(): string
     {
-        return 'No processing files library set!';
+        return 'mock';
     }
 
     public function flNoProcessDirSet(): string
     {
-        return 'No processing directories library set!';
+        return 'mock';
     }
 
     public function flNoAvailableClasses(): string
     {
-        return 'No available classes for that settings!';
+        return 'mock';
     }
 }

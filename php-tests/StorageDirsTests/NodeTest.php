@@ -4,12 +4,14 @@ namespace StorageDirsTests;
 
 
 use kalanis\kw_files\FilesException;
+use kalanis\kw_paths\PathsException;
 
 
 class NodeTest extends AStorageTest
 {
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testThrough(): void
     {

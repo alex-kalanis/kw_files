@@ -106,4 +106,13 @@ class Basic extends ANodes
     {
         return null;
     }
+
+    /**
+     * @return string
+     * @codeCoverageIgnore only when path fails
+     */
+    protected function noDirectoryDelimiterSet(): string
+    {
+        return $this->lang->flNoDirectoryDelimiterSet();
+    }
 }

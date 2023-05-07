@@ -240,4 +240,13 @@ class Basic extends ADirs
             return mb_strlen(strval($content));
         }
     }
+
+    /**
+     * @return string
+     * @codeCoverageIgnore only when path fails
+     */
+    protected function noDirectoryDelimiterSet(): string
+    {
+        return $this->lang->flNoDirectoryDelimiterSet();
+    }
 }

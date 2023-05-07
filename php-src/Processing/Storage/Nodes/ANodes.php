@@ -4,7 +4,7 @@ namespace kalanis\kw_files\Processing\Storage\Nodes;
 
 
 use kalanis\kw_files\Interfaces\IProcessNodes;
-use kalanis\kw_files\Processing\TPathTransform;
+use kalanis\kw_paths\Extras\TPathTransform;
 
 
 /**

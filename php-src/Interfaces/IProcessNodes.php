@@ -4,6 +4,7 @@ namespace kalanis\kw_files\Interfaces;
 
 
 use kalanis\kw_files\FilesException;
+use kalanis\kw_paths\PathsException;
 
 
 /**
@@ -16,6 +17,7 @@ interface IProcessNodes
     /**
      * @param string[] $entry
      * @throws FilesException
+     * @throws PathsException
      * @return bool
      */
     public function exists(array $entry): bool;
@@ -23,6 +25,7 @@ interface IProcessNodes
     /**
      * @param string[] $entry
      * @throws FilesException
+     * @throws PathsException
      * @return bool
      */
     public function isReadable(array $entry): bool;
@@ -30,6 +33,7 @@ interface IProcessNodes
     /**
      * @param string[] $entry
      * @throws FilesException
+     * @throws PathsException
      * @return bool
      */
     public function isWritable(array $entry): bool;
@@ -37,6 +41,7 @@ interface IProcessNodes
     /**
      * @param string[] $entry
      * @throws FilesException
+     * @throws PathsException
      * @return bool
      */
     public function isDir(array $entry): bool;
@@ -44,6 +49,7 @@ interface IProcessNodes
     /**
      * @param string[] $entry
      * @throws FilesException
+     * @throws PathsException
      * @return bool
      */
     public function isFile(array $entry): bool;
@@ -51,6 +57,7 @@ interface IProcessNodes
     /**
      * @param string[] $entry
      * @throws FilesException
+     * @throws PathsException
      * @return int|null
      */
     public function size(array $entry): ?int;
@@ -58,6 +65,7 @@ interface IProcessNodes
     /**
      * @param string[] $entry
      * @throws FilesException
+     * @throws PathsException
      * @return int|null
      */
     public function created(array $entry): ?int;

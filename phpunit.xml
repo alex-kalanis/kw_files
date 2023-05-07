@@ -50,6 +50,8 @@
             <directory>php-tests/VolumeTests</directory>
             <directory>php-tests/StorageBasicTests</directory>
             <directory>php-tests/StorageDirsTests</directory>
+            <directory>php-tests/TraitsTests</directory>
+            <directory>php-tests/AccessTests</directory>
             <directory>php-tests/ExtendedTests</directory>
         </testsuite>
     </testsuites>

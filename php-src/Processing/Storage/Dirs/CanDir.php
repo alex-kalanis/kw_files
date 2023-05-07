@@ -124,4 +124,13 @@ class CanDir extends ADirs
             throw new FilesException($this->lang->flCannotRemoveDir($path), $ex->getCode(), $ex);
         }
     }
+
+    /**
+     * @return string
+     * @codeCoverageIgnore only when path fails
+     */
+    protected function noDirectoryDelimiterSet(): string
+    {
+        return $this->lang->flNoDirectoryDelimiterSet();
+    }
 }

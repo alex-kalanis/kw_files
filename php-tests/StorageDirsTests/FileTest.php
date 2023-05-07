@@ -4,6 +4,7 @@ namespace StorageDirsTests;
 
 
 use kalanis\kw_files\FilesException;
+use kalanis\kw_paths\PathsException;
 
 
 class FileTest extends AStorageTest
@@ -23,6 +24,7 @@ class FileTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testRead(): void
     {
@@ -35,6 +37,7 @@ class FileTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testReadNonExist(): void
     {
@@ -45,6 +48,7 @@ class FileTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testSave(): void
     {
@@ -54,6 +58,7 @@ class FileTest extends AStorageTest
 
     /**
      * @throws FilesException
+     * @throws PathsException
      */
     public function testCopyMoveDelete(): void
     {
