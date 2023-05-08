@@ -25,8 +25,8 @@ interface IProcessFiles
 
     /**
      * @param string[] $entry
-     * @param int|null $offset
-     * @param int|null $length
+     * @param int<0, max>|null $offset
+     * @param int<0, max>|null $length
      * @throws FilesException
      * @throws PathsException
      * @return string|resource

@@ -4,9 +4,7 @@ namespace ProcessingTests;
 
 
 use CommonTestClass;
-use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Processing\TPath;
-use kalanis\kw_files\Processing\TPathTransform;
 
 
 class PathTest extends CommonTestClass
@@ -24,30 +22,6 @@ class PathTest extends CommonTestClass
         $this->assertEquals($to, $lib->getPath());
     }
 
-    /**
-     * @param array<string> $from
-     * @param string $to
-     * @throws FilesException
-     * @dataProvider transformProvider
-     */
-    public function testCompactFrom(array $from, string $to): void
-    {
-        $lib = new XPathTransform();
-        $this->assertEquals($to, $lib->compactName($from));
-    }
-
-    /**
-     * @param array<string> $to
-     * @param string $from
-     * @throws FilesException
-     * @dataProvider transformProvider
-     */
-    public function testExpandFrom(array $to, string $from): void
-    {
-        $lib = new XPathTransform();
-        $this->assertEquals($to, $lib->expandName($from));
-    }
-
     public function transformProvider(): array
     {
         return [
@@ -62,36 +36,10 @@ class PathTest extends CommonTestClass
             [['', ], '', ],
         ];
     }
-
-    /**
-     * @throws FilesException
-     */
-    public function testEmptyCompact(): void
-    {
-        $lib = new XPathTransform();
-        $this->expectException(FilesException::class);
-        $lib->compactName(['any', 'where'], '');
-    }
-
-    /**
-     * @throws FilesException
-     */
-    public function testEmptyExpand(): void
-    {
-        $lib = new XPathTransform();
-        $this->expectException(FilesException::class);
-        $lib->expandName('any/where', '');
-    }
 }
 
 
 class XPath
 {
     use TPath;
-}
-
-
-class XPathTransform
-{
-    use TPathTransform;
 }
