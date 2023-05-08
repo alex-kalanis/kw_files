@@ -8,7 +8,7 @@ use kalanis\kw_files\Interfaces\IProcessNodes;
 
 
 /**
- * trait TNode
+ * Trait TNode
  * @package kalanis\kw_files\Processing
  */
 trait TNode

@@ -5,7 +5,6 @@ namespace kalanis\kw_files\Processing\Storage\Nodes;
 
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IFLTranslations;
-use kalanis\kw_files\Translations;
 use kalanis\kw_storage\Interfaces\IPassDirs;
 use kalanis\kw_storage\StorageException;
 
@@ -19,13 +18,11 @@ class CanDir extends ANodes
 {
     /** @var IPassDirs */
     protected $storage = null;
-    /** @var IFLTranslations */
-    protected $lang = null;
 
     public function __construct(IPassDirs $storage, ?IFLTranslations $lang = null)
     {
         $this->storage = $storage;
-        $this->lang = $lang ?? new Translations();
+        $this->setLang($lang);
     }
 
     public function exists(array $entry): bool
@@ -104,6 +101,6 @@ class CanDir extends ANodes
      */
     protected function noDirectoryDelimiterSet(): string
     {
-        return $this->lang->flNoDirectoryDelimiterSet();
+        return $this->getLang()->flNoDirectoryDelimiterSet();
     }
 }

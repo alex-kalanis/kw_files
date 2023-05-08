@@ -6,8 +6,9 @@ namespace kalanis\kw_files\Traits;
 use kalanis\kw_files\Interfaces\IFLTranslations;
 use kalanis\kw_files\Translations;
 
+
 /**
- * trait TLang
+ * Trait TLang
  * @package kalanis\kw_files\Processing
  * Translations trait
  */

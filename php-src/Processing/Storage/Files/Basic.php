@@ -5,7 +5,6 @@ namespace kalanis\kw_files\Processing\Storage\Files;
 
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IFLTranslations;
-use kalanis\kw_files\Translations;
 use kalanis\kw_storage\Interfaces\IStorage;
 use kalanis\kw_storage\StorageException;
 
@@ -20,7 +19,7 @@ class Basic extends AFiles
     public function __construct(IStorage $storage, ?IFLTranslations $lang = null)
     {
         $this->storage = $storage;
-        $this->lang = $lang ?? new Translations();
+        $this->setLang($lang);
     }
 
     public function copyFile(array $source, array $dest): bool
@@ -30,7 +29,7 @@ class Basic extends AFiles
         try {
             return $this->storage->write($dst, $this->storage->read($src));
         } catch (StorageException $ex) {
-            throw new FilesException($this->lang->flCannotCopyFile($src, $dst), $ex->getCode(), $ex);
+            throw new FilesException($this->getLang()->flCannotCopyFile($src, $dst), $ex->getCode(), $ex);
         }
     }
 
@@ -47,6 +46,6 @@ class Basic extends AFiles
      */
     protected function noDirectoryDelimiterSet(): string
     {
-        return $this->lang->flNoDirectoryDelimiterSet();
+        return $this->getLang()->flNoDirectoryDelimiterSet();
     }
 }

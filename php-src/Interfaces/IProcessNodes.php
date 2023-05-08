@@ -14,6 +14,8 @@ use kalanis\kw_paths\PathsException;
  */
 interface IProcessNodes
 {
+    const STORAGE_NODE_KEY = "\eNODE\e";
+
     /**
      * @param string[] $entry
      * @throws FilesException

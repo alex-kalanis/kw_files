@@ -27,9 +27,9 @@ class Factory
 
     /**
      * @param string|array<string|int, string|int|float|bool|object>|object $param
-     * @return CompositeAdapter
-     *@throws PathsException
+     * @throws PathsException
      * @throws FilesException
+     * @return CompositeAdapter
      */
     public function getClass($param): CompositeAdapter
     {
