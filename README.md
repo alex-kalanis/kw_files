@@ -42,6 +42,7 @@ familiar with composer)
 ### Changes
 
 - v2 has difference in interface and class tree building for free name lookup
+- v3 has extended support of actions over files, got some things from other repositories
 
 
 Notes to self: - all entries starts internally with the separators (usually slashes). It is not necessary
