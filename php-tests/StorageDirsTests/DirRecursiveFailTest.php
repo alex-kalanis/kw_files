@@ -7,7 +7,7 @@ use kalanis\kw_files\FilesException;
 use kalanis\kw_paths\PathsException;
 
 
-class DirFailTest extends AStorageTest
+class DirRecursiveFailTest extends AStorageTest
 {
     /**
      * @throws FilesException
@@ -15,7 +15,7 @@ class DirFailTest extends AStorageTest
      */
     public function testCreate(): void
     {
-        $lib = $this->getDirFailLib();
+        $lib = $this->getDirRecursiveFailLib();
         $this->expectException(FilesException::class);
         $lib->createDir(['another'], false);
     }
@@ -26,7 +26,7 @@ class DirFailTest extends AStorageTest
      */
     public function testRead(): void
     {
-        $lib = $this->getDirFailLib();
+        $lib = $this->getDirRecursiveFailLib();
         $this->expectException(FilesException::class);
         $lib->readDir([''], false, true);
     }
@@ -37,7 +37,7 @@ class DirFailTest extends AStorageTest
      */
     public function testCopy(): void
     {
-        $lib = $this->getDirFailLib();
+        $lib = $this->getDirRecursiveFailLib();
         $this->expectException(FilesException::class);
         $lib->copyDir(['next_one'], ['more']);
     }
@@ -48,7 +48,7 @@ class DirFailTest extends AStorageTest
      */
     public function testMove(): void
     {
-        $lib = $this->getDirFailLib();
+        $lib = $this->getDirRecursiveFailLib();
         $this->expectException(FilesException::class);
         $lib->moveDir(['more'], ['another']);
     }
@@ -59,7 +59,7 @@ class DirFailTest extends AStorageTest
      */
     public function testDelete(): void
     {
-        $lib = $this->getDirFailLib();
+        $lib = $this->getDirRecursiveFailLib();
         $this->expectException(FilesException::class);
         $lib->deleteDir(['another'], true);
     }

@@ -75,56 +75,48 @@ class DirTest extends CommonTestClass
     public function testRead1(): void
     {
         $lib = $this->getLib();
-        $subList = $lib->readDir([''], false);
+        $subList = $lib->readDir([], false);
         usort($subList, [$this, 'sortingPaths']);
 
         $entry = reset($subList);
         /** @var Node $entry */
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('', reset($name));
+        $this->assertEquals([], $entry->getPath());
         $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
         $this->assertTrue($entry->isDir());
         $this->assertFalse($entry->isFile());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('dummy1.txt', reset($name));
+        $this->assertEquals(['dummy1.txt'], $entry->getPath());
         $this->assertEquals(36, $entry->getSize());
         $this->assertEquals(ITypes::TYPE_FILE, $entry->getType());
         $this->assertFalse($entry->isDir());
         $this->assertTrue($entry->isFile());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('dummy2.txt', reset($name));
+        $this->assertEquals(['dummy2.txt'], $entry->getPath());
         $this->assertEquals(36, $entry->getSize());
         $this->assertEquals(ITypes::TYPE_FILE, $entry->getType());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('last_one', reset($name));
+        $this->assertEquals(['last_one'], $entry->getPath());
         $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('next_one', reset($name));
+        $this->assertEquals(['next_one'], $entry->getPath());
         $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('other1.txt', reset($name));
+        $this->assertEquals(['other1.txt'], $entry->getPath());
         $this->assertEquals(36, $entry->getSize());
         $this->assertEquals(ITypes::TYPE_FILE, $entry->getType());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('other2.txt', reset($name));
+        $this->assertEquals(['other2.txt'], $entry->getPath());
         $this->assertEquals(36, $entry->getSize());
         $this->assertEquals(ITypes::TYPE_FILE, $entry->getType());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('sub', reset($name));
+        $this->assertEquals(['sub'], $entry->getPath());
         $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
 
         $this->assertFalse(next($subList));
@@ -142,18 +134,15 @@ class DirTest extends CommonTestClass
 
         $entry = reset($subList);
         /** @var Node $entry */
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('next_one', reset($name));
+        $this->assertEquals([], $entry->getPath());
         $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('sub_one', reset($name));
+        $this->assertEquals(['sub_one'], $entry->getPath());
         $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('.gitkeep', reset($name));
+        $this->assertEquals(['sub_one', '.gitkeep'], $entry->getPath());
         $this->assertEquals(0, $entry->getSize());
         $this->assertEquals(ITypes::TYPE_FILE, $entry->getType());
 
@@ -170,13 +159,11 @@ class DirTest extends CommonTestClass
         $subList = $lib->readDir(['last_one'], false);
         $entry = reset($subList);
         /** @var Node $entry */
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('last_one', reset($name));
+        $this->assertEquals([], $entry->getPath());
         $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
 
         $entry = next($subList);
-        $name = array_slice($entry->getPath(), -1);
-        $this->assertEquals('.gitkeep', reset($name));
+        $this->assertEquals(['.gitkeep'], $entry->getPath());
         $this->assertEquals(0, $entry->getSize());
         $this->assertEquals(ITypes::TYPE_FILE, $entry->getType());
 

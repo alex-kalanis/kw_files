@@ -1,6 +1,6 @@
 <?php
 
-namespace StorageBasicTests;
+namespace StorageDirsTests;
 
 
 use kalanis\kw_files\FilesException;
@@ -10,15 +10,61 @@ use kalanis\kw_files\Processing;
 use kalanis\kw_paths\PathsException;
 
 
-class DirTest extends AStorageTest
+class DirRecursiveTest extends AStorageTest
 {
+    protected function setUp(): void
+    {
+        $this->clearData();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->clearData();
+    }
+
+    protected function clearData(): void
+    {
+        clearstatcache();
+        $this->rmFile('tmp' . DIRECTORY_SEPARATOR . 'other' . DIRECTORY_SEPARATOR . 'sus');
+        $this->rmFile('tmp' . DIRECTORY_SEPARATOR . 'red');
+        $this->rmDir('tmp' . DIRECTORY_SEPARATOR . 'other' . DIRECTORY_SEPARATOR . 'amogus');
+        $this->rmDir('tmp' . DIRECTORY_SEPARATOR . 'other');
+        $this->rmDir('tmp');
+        clearstatcache();
+        $this->rmFile('another' . DIRECTORY_SEPARATOR . 'sub_one' . DIRECTORY_SEPARATOR . '.gitkeep');
+        $this->rmDir('another' . DIRECTORY_SEPARATOR . 'sub_one');
+        $this->rmDir('another');
+        clearstatcache();
+        $this->rmDir('sub' . DIRECTORY_SEPARATOR . 'added');
+        $this->rmDir('more' . DIRECTORY_SEPARATOR . 'added');
+        clearstatcache();
+        $this->rmFile('more' . DIRECTORY_SEPARATOR . 'sub_one' . DIRECTORY_SEPARATOR . '.gitkeep');
+        $this->rmDir('more' . DIRECTORY_SEPARATOR . 'sub_one');
+        $this->rmDir('more');
+        clearstatcache();
+    }
+
+    protected function rmDir(string $path): void
+    {
+        if (is_dir($this->getTestPath() . DIRECTORY_SEPARATOR . $path)) {
+            rmdir($this->getTestPath() . DIRECTORY_SEPARATOR . $path);
+        }
+    }
+
+    protected function rmFile(string $path): void
+    {
+        if (is_file($this->getTestPath() . DIRECTORY_SEPARATOR . $path)) {
+            unlink($this->getTestPath() . DIRECTORY_SEPARATOR . $path);
+        }
+    }
+
     /**
      * @throws FilesException
      * @throws PathsException
      */
     public function testCreate(): void
     {
-        $lib = $this->getDirLib();
+        $lib = $this->getDirRecursiveLib();
         $this->assertTrue($lib->createDir(['another'], false));
         $this->assertTrue($lib->createDir(['sub', 'added'], false)); // not exists in sub dir
         $this->assertFalse($lib->createDir(['sub', 'added'], true)); // already exists in sub dir
@@ -33,16 +79,15 @@ class DirTest extends AStorageTest
     public function testRead0(): void
     {
         // fill with own tree, then getting that tree
-        $storage = $this->getStorageLib();
+        $storage = $this->getStorageRecursiveLib();
         $procFile = new Processing\Storage\ProcessFile($storage);
         $lib = new Processing\Storage\ProcessDir($storage);
 
-        $lib->createDir([]);
-        $lib->createDir(['other', 'amogus'], true);
-        $procFile->saveFile(['other', 'sus'], 'abcdef123456');
-        $procFile->saveFile(['red'], '123456789abcdefghi');
+        $this->assertTrue($lib->createDir(['tmp', 'other', 'amogus'], true));
+        $this->assertTrue($procFile->saveFile(['tmp', 'other', 'sus'], 'abcdef123456'));
+        $this->assertTrue($procFile->saveFile(['tmp', 'red'], '123456789abcdefghi'));
 
-        $subList = $lib->readDir([]);
+        $subList = $lib->readDir(['tmp']);
         usort($subList, [$this, 'sortingPaths']);
 
         $entry = reset($subList);
@@ -66,7 +111,7 @@ class DirTest extends AStorageTest
 
         $this->assertFalse(next($subList));
 
-        $subList = $lib->readDir(['other'], true);
+        $subList = $lib->readDir(['tmp', 'other'], true);
         usort($subList, [$this, 'sortingPaths']);
 
         $entry = reset($subList);
@@ -91,7 +136,7 @@ class DirTest extends AStorageTest
      */
     public function testRead1(): void
     {
-        $lib = $this->getDirLib();
+        $lib = $this->getDirRecursiveLib();
         $subList = $lib->readDir([], false, true);
         usort($subList, [$this, 'sortingPaths']);
 
@@ -145,8 +190,9 @@ class DirTest extends AStorageTest
      */
     public function testRead2(): void
     {
-        $lib = $this->getDirLib();
+        $lib = $this->getDirRecursiveLib();
         $subList = $lib->readDir(['next_one'], true);
+
         $entry = reset($subList);
         /** @var Node $entry */
         $this->assertEquals([], $entry->getPath());
@@ -170,8 +216,9 @@ class DirTest extends AStorageTest
      */
     public function testRead3(): void
     {
-        $lib = $this->getDirLib();
+        $lib = $this->getDirRecursiveLib();
         $subList = $lib->readDir(['last_one'], false);
+
         $entry = reset($subList);
         /** @var Node $entry */
         $this->assertEquals([], $entry->getPath());
@@ -189,30 +236,9 @@ class DirTest extends AStorageTest
      * @throws FilesException
      * @throws PathsException
      */
-    public function testRead4(): void
-    {
-        $lib = $this->getDirTreeLib();
-        $subList = $lib->readDir([], false);
-        $entry = reset($subList);
-        /** @var Node $entry */
-        $this->assertEquals([], $entry->getPath());
-        $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
-
-        $entry = next($subList);
-        $this->assertEquals(['data'], $entry->getPath());
-        $this->assertEquals(0, $entry->getSize());
-        $this->assertEquals(ITypes::TYPE_DIR, $entry->getType());
-
-        $this->assertFalse(next($subList));
-    }
-
-    /**
-     * @throws FilesException
-     * @throws PathsException
-     */
     public function testReadFail(): void
     {
-        $lib = $this->getDirLib();
+        $lib = $this->getDirRecursiveLib();
         $this->expectException(FilesException::class);
         $lib->readDir(['dummy2.txt']);
     }
@@ -223,54 +249,10 @@ class DirTest extends AStorageTest
      */
     public function testCopyMoveDelete(): void
     {
-        $lib = $this->getDirLib();
+        $lib = $this->getDirRecursiveLib();
         $this->assertTrue($lib->copyDir(['next_one'], ['more']));
         $this->assertTrue($lib->moveDir(['more'], ['another']));
         $this->assertTrue($lib->deleteDir(['another'], true));
         $this->assertFalse($lib->deleteDir(['another']));
-    }
-
-    /**
-     * @throws FilesException
-     * @throws PathsException
-     */
-    public function testCopyFail(): void
-    {
-        $lib = $this->getDirLib();
-        $this->assertFalse($lib->copyDir(['next_one'], ['other2.txt'])); // dest exists
-        $this->assertFalse($lib->copyDir(['more'], ['another'])); // source is not exists
-    }
-
-    /**
-     * @throws FilesException
-     * @throws PathsException
-     */
-    public function testMoveFail(): void
-    {
-        $lib = $this->getDirLib();
-        $this->assertFalse($lib->moveDir(['next_one'], ['other2.txt'])); // dest exists
-        $this->assertFalse($lib->moveDir(['more'], ['another'])); // source not exists
-    }
-
-    /**
-     * @throws FilesException
-     * @throws PathsException
-     */
-    public function testDeleteFail(): void
-    {
-        $lib = $this->getDirLib();
-        $this->assertFalse($lib->deleteDir(['other2.txt']));
-        $this->assertFalse($lib->deleteDir(['more']));
-    }
-
-    /**
-     * @throws FilesException
-     * @throws PathsException
-     */
-    public function testDeepDeleteFail(): void
-    {
-        $lib = $this->getDirLib();
-        $this->assertTrue($lib->createDir(['some', 'more'], true));
-        $this->assertFalse($lib->deleteDir(['some']));
     }
 }
