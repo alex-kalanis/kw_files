@@ -5,6 +5,7 @@ namespace kalanis\kw_files\Processing\Storage\Dirs;
 
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IFLTranslations;
+use kalanis\kw_files\Interfaces\IProcessNodes;
 use kalanis\kw_files\Interfaces\ITypes;
 use kalanis\kw_files\Node;
 use kalanis\kw_storage\Interfaces\IStorage;
@@ -47,14 +48,14 @@ class Basic extends ADirs
                 } else {
                     if ($deep) {
                         // create deep tree
-                        $this->storage->write($subNodeName, static::STORAGE_NODE_KEY);
+                        $this->storage->write($subNodeName, IProcessNodes::STORAGE_NODE_KEY);
                     } else {
                         // cannot create in shallow tree
                         return false;
                     }
                 }
             }
-            return $this->storage->write($entryPath, static::STORAGE_NODE_KEY);
+            return $this->storage->write($entryPath, IProcessNodes::STORAGE_NODE_KEY);
         } catch (StorageException $ex) {
             throw new FilesException($this->getLang()->flCannotCreateDir($entryPath), $ex->getCode(), $ex);
         }
@@ -130,7 +131,7 @@ class Basic extends ADirs
                 return false;
             }
             $paths = $this->storage->lookup($src);
-            $this->storage->write($dst, self::STORAGE_NODE_KEY);
+            $this->storage->write($dst, IProcessNodes::STORAGE_NODE_KEY);
             foreach ($paths as $path) {
                 if (empty($path)) {
                     // skip current
@@ -156,7 +157,7 @@ class Basic extends ADirs
                 return false;
             }
             $paths = $this->storage->lookup($src);
-            $this->storage->write($dst, self::STORAGE_NODE_KEY);
+            $this->storage->write($dst, IProcessNodes::STORAGE_NODE_KEY);
             foreach ($paths as $path) {
                 if (empty($path)) {
                     // skip current
@@ -204,7 +205,7 @@ class Basic extends ADirs
      */
     protected function isNode(string $entry): bool
     {
-        return $this->storage->exists($entry) ? (static::STORAGE_NODE_KEY === $this->storage->read($entry)) : false;
+        return $this->storage->exists($entry) ? (IProcessNodes::STORAGE_NODE_KEY === $this->storage->read($entry)) : false;
     }
 
     /**

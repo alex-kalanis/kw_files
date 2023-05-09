@@ -15,8 +15,6 @@ use kalanis\kw_paths\Extras\TPathTransform;
  */
 abstract class ADirs implements IProcessDirs
 {
-    const STORAGE_NODE_KEY = "\eNODE\e";
-
     use TPathTransform;
     use TLang;
 
