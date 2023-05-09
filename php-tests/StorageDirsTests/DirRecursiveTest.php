@@ -192,6 +192,7 @@ class DirRecursiveTest extends AStorageTest
     {
         $lib = $this->getDirRecursiveLib();
         $subList = $lib->readDir(['next_one'], true);
+        usort($subList, [$this, 'sortingPaths']);
 
         $entry = reset($subList);
         /** @var Node $entry */
@@ -218,6 +219,7 @@ class DirRecursiveTest extends AStorageTest
     {
         $lib = $this->getDirRecursiveLib();
         $subList = $lib->readDir(['last_one'], false);
+        usort($subList, [$this, 'sortingPaths']);
 
         $entry = reset($subList);
         /** @var Node $entry */

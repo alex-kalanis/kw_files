@@ -193,6 +193,8 @@ class DirFlatTest extends AStorageTest
     {
         $lib = $this->getDirFlatLib();
         $subList = $lib->readDir(['next_one'], true);
+        usort($subList, [$this, 'sortingPaths']);
+
         $entry = reset($subList);
         /** @var Node $entry */
         $this->assertEquals([], $entry->getPath());
@@ -218,6 +220,8 @@ class DirFlatTest extends AStorageTest
     {
         $lib = $this->getDirFlatLib();
         $subList = $lib->readDir(['last_one'], false);
+        usort($subList, [$this, 'sortingPaths']);
+
         $entry = reset($subList);
         /** @var Node $entry */
         $this->assertEquals([], $entry->getPath());
