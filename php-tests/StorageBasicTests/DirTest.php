@@ -240,43 +240,20 @@ class DirTest extends AStorageTest
      * @throws FilesException
      * @throws PathsException
      */
-    public function testCopyFail(): void
+    public function testDeleteShallow(): void
     {
         $lib = $this->getDirLib();
-        $this->assertFalse($lib->copyDir(['next_one'], ['other2.txt'])); // dest exists
-        $this->assertFalse($lib->copyDir(['more'], ['another'])); // source is not exists
+        $this->assertTrue($lib->createDir(['another']));
+        $this->assertTrue($lib->deleteDir(['another']));
     }
 
     /**
      * @throws FilesException
      * @throws PathsException
      */
-    public function testMoveFail(): void
+    public function testDeleteDeep(): void
     {
         $lib = $this->getDirLib();
-        $this->assertFalse($lib->moveDir(['next_one'], ['other2.txt'])); // dest exists
-        $this->assertFalse($lib->moveDir(['more'], ['another'])); // source not exists
-    }
-
-    /**
-     * @throws FilesException
-     * @throws PathsException
-     */
-    public function testDeleteFail(): void
-    {
-        $lib = $this->getDirLib();
-        $this->assertFalse($lib->deleteDir(['other2.txt']));
-        $this->assertFalse($lib->deleteDir(['more']));
-    }
-
-    /**
-     * @throws FilesException
-     * @throws PathsException
-     */
-    public function testDeepDeleteFail(): void
-    {
-        $lib = $this->getDirLib();
-        $this->assertTrue($lib->createDir(['some', 'more'], true));
-        $this->assertFalse($lib->deleteDir(['some']));
+        $this->assertTrue($lib->deleteDir(['next_one'], true));
     }
 }

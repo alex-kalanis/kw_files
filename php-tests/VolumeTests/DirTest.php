@@ -3,64 +3,21 @@
 namespace VolumeTests;
 
 
-use CommonTestClass;
 use kalanis\kw_files\FilesException;
-use kalanis\kw_files\Interfaces\IProcessDirs;
 use kalanis\kw_files\Interfaces\ITypes;
 use kalanis\kw_files\Node;
-use kalanis\kw_files\Processing\Volume\ProcessDir;
 use kalanis\kw_paths\PathsException;
 
 
-class DirTest extends CommonTestClass
+class DirTest extends AVolume
 {
-    protected function setUp(): void
-    {
-        $this->clearData();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->clearData();
-    }
-
-    protected function clearData(): void
-    {
-        clearstatcache();
-        $this->rmFile('another' . DIRECTORY_SEPARATOR . 'sub_one' . DIRECTORY_SEPARATOR . '.gitkeep');
-        $this->rmDir('another' . DIRECTORY_SEPARATOR . 'sub_one');
-        $this->rmDir('another');
-        clearstatcache();
-        $this->rmDir('sub' . DIRECTORY_SEPARATOR . 'added');
-        $this->rmDir('more' . DIRECTORY_SEPARATOR . 'added');
-        clearstatcache();
-        $this->rmFile('more' . DIRECTORY_SEPARATOR . 'sub_one' . DIRECTORY_SEPARATOR . '.gitkeep');
-        $this->rmDir('more' . DIRECTORY_SEPARATOR . 'sub_one');
-        $this->rmDir('more');
-        clearstatcache();
-    }
-
-    protected function rmDir(string $path): void
-    {
-        if (is_dir($this->getTestPath() . DIRECTORY_SEPARATOR . $path)) {
-            rmdir($this->getTestPath() . DIRECTORY_SEPARATOR . $path);
-        }
-    }
-
-    protected function rmFile(string $path): void
-    {
-        if (is_file($this->getTestPath() . DIRECTORY_SEPARATOR . $path)) {
-            unlink($this->getTestPath() . DIRECTORY_SEPARATOR . $path);
-        }
-    }
-
     /**
      * @throws FilesException
      * @throws PathsException
      */
     public function testCreate(): void
     {
-        $lib = $this->getLib();
+        $lib = $this->getDirLib();
         $this->assertTrue($lib->createDir(['another'], false));
         $this->assertTrue($lib->createDir(['sub', 'added'], false)); // not exists in sub dir
         $this->assertFalse($lib->createDir(['sub', 'added'], true)); // already exists in sub dir
@@ -74,7 +31,7 @@ class DirTest extends CommonTestClass
      */
     public function testRead1(): void
     {
-        $lib = $this->getLib();
+        $lib = $this->getDirLib();
         $subList = $lib->readDir([], false);
         usort($subList, [$this, 'sortingPaths']);
 
@@ -128,7 +85,7 @@ class DirTest extends CommonTestClass
      */
     public function testRead2(): void
     {
-        $lib = $this->getLib();
+        $lib = $this->getDirLib();
         $subList = $lib->readDir(['next_one'], true);
         usort($subList, [$this, 'sortingPaths']);
 
@@ -155,7 +112,7 @@ class DirTest extends CommonTestClass
      */
     public function testRead3(): void
     {
-        $lib = $this->getLib();
+        $lib = $this->getDirLib();
         $subList = $lib->readDir(['last_one'], false);
         $entry = reset($subList);
         /** @var Node $entry */
@@ -176,7 +133,7 @@ class DirTest extends CommonTestClass
      */
     public function testReadFail(): void
     {
-        $lib = $this->getLib();
+        $lib = $this->getDirLib();
         $this->expectException(FilesException::class);
         $lib->readDir(['dummy2.txt']);
     }
@@ -187,7 +144,7 @@ class DirTest extends CommonTestClass
      */
     public function testCopyMoveDelete(): void
     {
-        $lib = $this->getLib();
+        $lib = $this->getDirLib();
         $this->assertTrue($lib->copyDir(['next_one'], ['more']));
         $this->assertTrue($lib->moveDir(['more'], ['another']));
         $this->assertTrue($lib->deleteDir(['another'], true));
@@ -195,16 +152,25 @@ class DirTest extends CommonTestClass
     }
 
     /**
+     * @throws FilesException
      * @throws PathsException
-     * @return IProcessDirs
      */
-    protected function getLib(): IProcessDirs
+    public function testDeleteShallow(): void
     {
-        return new ProcessDir($this->getTestPath());
+        $lib = $this->getDirLib();
+        $this->assertTrue($lib->createDir(['another']));
+        $this->assertTrue($lib->deleteDir(['another']));
     }
 
-    protected function getTestPath(): string
+    /**
+     * @throws FilesException
+     * @throws PathsException
+     */
+    public function testDeleteDeep(): void
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree';
+        $lib = $this->getDirLib();
+        $this->assertTrue($lib->createDir(['another', 'sub_one'], true));
+        $this->assertFalse($lib->deleteDir(['another']));
+        $this->assertTrue($lib->deleteDir(['another'], true));
     }
 }

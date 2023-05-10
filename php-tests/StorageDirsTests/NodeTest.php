@@ -34,5 +34,20 @@ class NodeTest extends AStorageTest
         $this->assertEquals(4096, $lib->size(['sub']));
 
         $this->assertNull($lib->created(['unknown']));
+        $this->assertNotNull($lib->created(['sub'])); // data here
+    }
+
+    /**
+     * @throws FilesException
+     * @throws PathsException
+     */
+    public function testRoot(): void
+    {
+        $lib = $this->getNodeLib();
+        $this->assertTrue($lib->exists([]));
+        $this->assertTrue($lib->isDir([]));
+        $this->assertFalse($lib->isFile([]));
+        $this->assertNotNull($lib->size([]));
+        $this->assertNotNull($lib->created([]));
     }
 }

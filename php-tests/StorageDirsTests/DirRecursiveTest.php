@@ -257,4 +257,26 @@ class DirRecursiveTest extends AStorageTest
         $this->assertTrue($lib->deleteDir(['another'], true));
         $this->assertFalse($lib->deleteDir(['another']));
     }
+
+    /**
+     * @throws FilesException
+     * @throws PathsException
+     */
+    public function testDeleteShallow(): void
+    {
+        $lib = $this->getDirRecursiveLib();
+        $this->assertTrue($lib->createDir(['another']));
+        $this->assertTrue($lib->deleteDir(['another']));
+    }
+
+    /**
+     * @throws FilesException
+     * @throws PathsException
+     */
+    public function testDeleteDeep(): void
+    {
+        $lib = $this->getDirRecursiveLib();
+        $this->assertTrue($lib->createDir(['another', 'sub_one'], true));
+        $this->assertTrue($lib->deleteDir(['another'], true));
+    }
 }

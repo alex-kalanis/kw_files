@@ -20,8 +20,6 @@ use Traversable;
 
 abstract class AStorageTest extends CommonTestClass
 {
-    const STORAGE_NODE_KEY_TEST = "\eNODE\e";
-
     protected function getNodeLib(): IProcessNodes
     {
         DirKey::setDir($this->getTestPath());
@@ -80,15 +78,15 @@ abstract class AStorageTest extends CommonTestClass
         $res = fopen('php://memory', 'r+');
         fwrite($res, 'qwertzuiopasdfghjklyxcvbnm0123456789');
         $lib = new Memory();
-        $lib->save('', static::STORAGE_NODE_KEY_TEST); // root has empty file name - his name is defined by its mountpoint
-        $lib->save('' . DIRECTORY_SEPARATOR . 'data', static::STORAGE_NODE_KEY_TEST);
-        $lib->save('' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree', static::STORAGE_NODE_KEY_TEST);
-        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'last_one', static::STORAGE_NODE_KEY_TEST);
+        $lib->save('', IProcessNodes::STORAGE_NODE_KEY); // root has empty file name - his name is defined by its mountpoint
+        $lib->save('' . DIRECTORY_SEPARATOR . 'data', IProcessNodes::STORAGE_NODE_KEY);
+        $lib->save('' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree', IProcessNodes::STORAGE_NODE_KEY);
+        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'last_one', IProcessNodes::STORAGE_NODE_KEY);
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'last_one' . DIRECTORY_SEPARATOR . '.gitkeep', '');
-        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one', static::STORAGE_NODE_KEY_TEST);
-        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one' . DIRECTORY_SEPARATOR . 'sub_one', static::STORAGE_NODE_KEY_TEST);
+        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one', IProcessNodes::STORAGE_NODE_KEY);
+        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one' . DIRECTORY_SEPARATOR . 'sub_one', IProcessNodes::STORAGE_NODE_KEY);
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one' . DIRECTORY_SEPARATOR . 'sub_one' . DIRECTORY_SEPARATOR . '.gitkeep', '');
-        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'sub', static::STORAGE_NODE_KEY_TEST);
+        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'sub', IProcessNodes::STORAGE_NODE_KEY);
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'sub' . DIRECTORY_SEPARATOR . 'dummy3.txt', 'qwertzuiopasdfghjklyxcvbnm0123456789');
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'sub' . DIRECTORY_SEPARATOR . 'dummy4.txt', false); // intentionally!!!
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'dummy1.txt', 'qwertzuiopasdfghjklyxcvbnm0123456789');
