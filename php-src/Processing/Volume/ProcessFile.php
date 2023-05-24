@@ -116,19 +116,10 @@ class ProcessFile implements IProcessFiles
      */
     protected function writeStream(string $path, $content): void
     {
-        $pointer = @fopen($path, 'wb');
-        if (false === $pointer) {
+        if (false === file_put_contents($path, $content)) {
             // @codeCoverageIgnoreStart
-            throw new FilesException($this->getLang()->flCannotOpenFile($path));
-        }
-        // @codeCoverageIgnoreEnd
-        if (false === @stream_copy_to_stream($pointer, $content, -1, 0)) {
-            // @codeCoverageIgnoreStart
-            /** @scrutinizer ignore-unhandled */@fclose($pointer);
             throw new FilesException($this->getLang()->flCannotWriteFile($path));
         }
-        // @codeCoverageIgnoreEnd
-        /** @scrutinizer ignore-unhandled */@fclose($pointer);
     }
 
     public function copyFile(array $source, array $dest): bool
