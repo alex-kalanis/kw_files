@@ -82,10 +82,16 @@ class ProcessFile implements IProcessFiles
                     /** @scrutinizer ignore-unhandled */@fclose($handler);
                     $this->writeStream($path, $result);
                 } else {
+                    $handler = @fopen('php://memory', 'rb+');
+                    if (false === $handler) {
+                        // @codeCoverageIgnoreStart
+                        throw new FilesException($this->getLang()->flCannotOpenFile($path));
+                    }
+                    // @codeCoverageIgnoreEnd
                     $this->writeStream(
                         $path,
                         $this->addStreamToPosition(
-                            fopen('php://memory', 'rb+'), // no original content
+                            $handler, // no original content
                             $this->toStream(
                                 $path,
                                 $content

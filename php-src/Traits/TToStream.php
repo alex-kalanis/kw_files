@@ -34,6 +34,12 @@ trait TToStream
             return $content;
         } else {
             $handle = fopen('php://temp', 'rb+');
+            if (false === $handle) {
+                // @codeCoverageIgnoreStart
+                // must die something with stream reading
+                throw new FilesException($this->getLang()->flCannotLoadFile($target));
+            }
+            // @codeCoverageIgnoreEnd
             if (false === fwrite($handle, $content)) {
                 // @codeCoverageIgnoreStart
                 // must die something with stream reading
