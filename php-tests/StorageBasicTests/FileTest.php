@@ -74,6 +74,29 @@ class FileTest extends AStorageTest
     }
 
     /**
+     * Insert content
+     * @throws FilesException
+     * @throws PathsException
+     */
+    public function testSave2(): void
+    {
+        $lib = $this->getFileLib();
+        $this->assertTrue($lib->saveFile(['extra1.txt'], 'qwertzuiopasdfghjklyxcvbnm0123456789'));
+        $this->assertTrue($lib->saveFile(['extra1.txt'], '0123456789', 15));
+    }
+
+    /**
+     * Create file with moved content
+     * @throws FilesException
+     * @throws PathsException
+     */
+    public function testSave3(): void
+    {
+        $lib = $this->getFileLib();
+        $this->assertTrue($lib->saveFile(['extra2.txt'], 'qwertzuiopasdfgh01234567890123456789', 5));
+    }
+
+    /**
      * @throws FilesException
      * @throws PathsException
      */

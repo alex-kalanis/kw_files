@@ -119,7 +119,7 @@ class XProcessDir implements IProcessDirs
 
 class XProcessFile implements IProcessFiles
 {
-    public function saveFile(array $entry, $content): bool
+    public function saveFile(array $entry, $content, ?int $offset = null): bool
     {
         return true;
     }

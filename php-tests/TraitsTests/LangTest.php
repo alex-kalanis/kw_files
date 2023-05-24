@@ -46,6 +46,21 @@ class XTrans implements IFLTranslations
         return 'mock';
     }
 
+    public function flCannotOpenFile(string $fileName): string
+    {
+        return 'mock';
+    }
+
+    public function flCannotSeekFile(string $fileName): string
+    {
+        return 'mock';
+    }
+
+    public function flCannotWriteFile(string $fileName): string
+    {
+        return 'mock';
+    }
+
     public function flCannotGetFilePart(string $fileName): string
     {
         return 'mock';
