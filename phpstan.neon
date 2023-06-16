@@ -1,5 +1,5 @@
 parameters:
-	level: 8
+	level: 9
 	paths:
 		- 'php-src'
 #	scanFiles:
@@ -10,12 +10,9 @@ parameters:
 #		- 'php-tests/CommonTestClass.php'
 	bootstrapFiles:
 		- 'php-tests/_autoload.php'
-#	ignoreErrors:
-#		-
-#			message: '#expects resource, resource\|null given\.#'
-#			path: 'php-src/Simple/Memory.php'
-#			# quality WTF - already covered in that "exists" check
-#		-
-#			message: '#Cannot call method [a-z]+\(\) on kalanis\\kw_cache\\Cache\\Formatted\|kalanis\\kw_cache\\Interfaces\\ICache\|null\.#'
-#			path: 'php-src/StaticCache.php'
-#			# quality WTF - already covered in that "exists" check
+	ignoreErrors:
+		# strval, intval
+		- '#Parameter \#1 \$va[rl]u?e? of function [si][tn][rt]val expects#'
+		# callbacks
+		- '#Parameter \#1 \$callback of function array_map expects#'
+		- '#Parameter \#2 \$callback of function array_filter expects#'
