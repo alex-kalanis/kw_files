@@ -11,7 +11,7 @@ use kalanis\kw_files\Processing\Storage\ProcessDir;
 use kalanis\kw_files\Processing\Storage\ProcessFile;
 use kalanis\kw_files\Processing\Storage\ProcessNode;
 use kalanis\kw_storage\Interfaces\ITarget;
-use kalanis\kw_storage\Storage\Key\DirKey;
+use kalanis\kw_storage\Storage\Key\StaticPrefixKey;
 use kalanis\kw_storage\Storage\Storage;
 use kalanis\kw_storage\Storage\Target\Memory;
 use kalanis\kw_storage\StorageException;
@@ -22,50 +22,50 @@ abstract class AStorageTest extends CommonTestClass
 {
     protected function getNodeLib(): IProcessNodes
     {
-        DirKey::setDir($this->getTestPath());
-        return new ProcessNode(new Storage(new DirKey(), $this->filledMemory()));
+        StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessNode(new Storage(new StaticPrefixKey(), $this->filledMemory()));
     }
 
     protected function getNodeFailLib(): IProcessNodes
     {
-        DirKey::setDir($this->getTestPath());
-        return new ProcessNode(new XFailStorage(new DirKey(), new Memory()));
+        StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessNode(new XFailStorage(new StaticPrefixKey(), new Memory()));
     }
 
     protected function getFileLib(): IProcessFiles
     {
-        DirKey::setDir($this->getTestPath());
-        return new ProcessFile(new Storage(new DirKey(), $this->filledMemory()));
+        StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessFile(new Storage(new StaticPrefixKey(), $this->filledMemory()));
     }
 
     protected function getFileFailLib(): IProcessFiles
     {
-        DirKey::setDir($this->getTestPath());
-        return new ProcessFile(new XFailStorage(new DirKey(), new Memory()));
+        StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessFile(new XFailStorage(new StaticPrefixKey(), new Memory()));
     }
 
     protected function getDirLib(): IProcessDirs
     {
-        DirKey::setDir($this->getTestPath());
-        return new ProcessDir(new Storage(new DirKey(), $this->filledMemory()));
+        StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessDir(new Storage(new StaticPrefixKey(), $this->filledMemory()));
     }
 
     protected function getDirFailLib(): IProcessDirs
     {
-        DirKey::setDir($this->getTestPath());
-        return new ProcessDir(new XFailStorage(new DirKey(), new Memory()));
+        StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessDir(new XFailStorage(new StaticPrefixKey(), new Memory()));
     }
 
     protected function getDirTreeLib(): IProcessDirs
     {
-        DirKey::setDir('');
-        return new ProcessDir(new Storage(new DirKey(), $this->filledMemory()));
+        StaticPrefixKey::setPrefix('');
+        return new ProcessDir(new Storage(new StaticPrefixKey(), $this->filledMemory()));
     }
 
     protected function getStorageLib(): Storage
     {
-        DirKey::setDir('');
-        return new Storage(new DirKey(), new Memory());
+        StaticPrefixKey::setPrefix('');
+        return new Storage(new StaticPrefixKey(), new Memory());
     }
 
     protected function getTestPath(): string

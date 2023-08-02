@@ -21,62 +21,62 @@ abstract class AStorageTest extends CommonTestClass
 {
     protected function getNodeLib(): IProcessNodes
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new ProcessNode(new StorageDirs(new Key\DirKey(), new Target\Volume()));
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessNode(new StorageDirs(new Key\StaticPrefixKey(), new Target\Volume()));
     }
 
     protected function getNodeFailLib(): IProcessNodes
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new ProcessNode(new XFailStorageDirs(new Key\DirKey(), new Target\Volume()));
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessNode(new XFailStorageDirs(new Key\StaticPrefixKey(), new Target\Volume()));
     }
 
     protected function getFileLib(): IProcessFiles
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new ProcessFile(new StorageDirs(new Key\DirKey(), new Target\Volume()));
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessFile(new StorageDirs(new Key\StaticPrefixKey(), new Target\Volume()));
     }
 
     protected function getFileFailLib(): IProcessFiles
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new ProcessFile(new XFailStorageDirs(new Key\DirKey(), new Target\Volume()));
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessFile(new XFailStorageDirs(new Key\StaticPrefixKey(), new Target\Volume()));
     }
 
     protected function getDirRecursiveLib(): IProcessDirs
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new ProcessDir(new StorageDirs(new Key\DirKey(), new Target\Volume()));
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessDir(new StorageDirs(new Key\StaticPrefixKey(), new Target\Volume()));
     }
 
     protected function getDirRecursiveFailLib(): IProcessDirs
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new ProcessDir(new XFailStorageDirs(new Key\DirKey(), new Target\Volume()));
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessDir(new XFailStorageDirs(new Key\StaticPrefixKey(), new Target\Volume()));
     }
 
     protected function getDirFlatLib(): IProcessDirs
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new ProcessDir(new StorageDirs(new Key\DirKey(), new Target\VolumeTargetFlat()));
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessDir(new StorageDirs(new Key\StaticPrefixKey(), new Target\VolumeTargetFlat()));
     }
 
     protected function getDirFlatFailLib(): IProcessDirs
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new ProcessDir(new XFailStorageDirs(new Key\DirKey(), new Target\VolumeTargetFlat()));
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessDir(new XFailStorageDirs(new Key\StaticPrefixKey(), new Target\VolumeTargetFlat()));
     }
 
     protected function getStorageRecursiveLib(): StorageDirs
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new StorageDirs(new Key\DirKey(), new Target\Volume());
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new StorageDirs(new Key\StaticPrefixKey(), new Target\Volume());
     }
 
     protected function getStorageFlatLib(): StorageDirs
     {
-        Key\DirKey::setDir($this->getTestPath());
-        return new StorageDirs(new Key\DirKey(), new Target\VolumeTargetFlat());
+        Key\StaticPrefixKey::setPrefix($this->getTestPath());
+        return new StorageDirs(new Key\StaticPrefixKey(), new Target\VolumeTargetFlat());
     }
 
     protected function getTestPath(): string
