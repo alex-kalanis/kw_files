@@ -26,7 +26,7 @@ class Factory
     }
 
     /**
-     * @param string|array<string|int, string|int|float|bool|object>|object $param
+     * @param mixed $param
      * @throws PathsException
      * @throws FilesException
      * @return CompositeAdapter
@@ -41,6 +41,9 @@ class Factory
             );
 
         } elseif (is_array($param)) {
+            if (isset($param['files'])) {
+                return $this->getClass($param['files']);
+            }
             if (isset($param['path']) && is_string($param['path'])) {
                 return new CompositeAdapter(
                     new Processing\Volume\ProcessNode($param['path'], $this->lang),

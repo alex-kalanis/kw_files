@@ -36,7 +36,7 @@ class FactoryTest extends CommonTestClass
             [['path' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree']],
             [['source' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree']],
             [$storage],
-            [['source' => $storage]],
+            [['files' => ['source' => $storage]]],
         ];
     }
 
