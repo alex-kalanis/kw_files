@@ -67,7 +67,10 @@ class Factory
             }
 
         } elseif (is_object($param)) {
-            if ($param instanceof IStorage) {
+            if ($param instanceof CompositeAdapter) {
+                return $param;
+
+            } elseif ($param instanceof IStorage) {
                 return new CompositeAdapter(
                     new Processing\Storage\ProcessNode($param, $this->lang),
                     new Processing\Storage\ProcessDir($param, $this->lang),

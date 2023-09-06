@@ -37,6 +37,7 @@ class FactoryTest extends CommonTestClass
             [['source' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree']],
             [$storage],
             [['files' => ['source' => $storage]]],
+            [(new Factory())->getClass($storage)], // deep init - already have composite
         ];
     }
 
