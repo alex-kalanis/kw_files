@@ -64,7 +64,7 @@ class ProcessFile implements IProcessFiles
                 $this->writeStream($path, $this->toStream($path, $content));
             } else { // append from position
                 if (file_exists($path)) {
-                    $handler = @fopen($path, 'rb');
+                    $handler = @fopen($path, 'rb+');
                     if (false === $handler) {
                         // @codeCoverageIgnoreStart
                         throw new FilesException($this->getLang()->flCannotOpenFile($path));

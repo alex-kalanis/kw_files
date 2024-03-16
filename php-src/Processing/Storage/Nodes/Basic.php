@@ -5,6 +5,7 @@ namespace kalanis\kw_files\Processing\Storage\Nodes;
 
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IFLTranslations;
+use kalanis\kw_files\Traits\TToString;
 use kalanis\kw_storage\Interfaces\IStorage;
 use kalanis\kw_storage\StorageException;
 
@@ -16,6 +17,8 @@ use kalanis\kw_storage\StorageException;
  */
 class Basic extends ANodes
 {
+    use TToString;
+
     /** @var IStorage */
     protected $storage = null;
 
@@ -51,7 +54,7 @@ class Basic extends ANodes
         $path = $this->compactName($entry, $this->getStorageSeparator());
         $path = empty($entry) ? $path : $this->getStorageSeparator() . $path;
         try {
-            return $this->storage->exists($path) && static::STORAGE_NODE_KEY === $this->storage->read($path);
+            return $this->storage->exists($path) && static::STORAGE_NODE_KEY === $this->toString($path, $this->storage->read($path));
         } catch (StorageException $ex) {
             throw new FilesException($this->getLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
@@ -62,7 +65,7 @@ class Basic extends ANodes
         $path = $this->compactName($entry, $this->getStorageSeparator());
         $path = empty($entry) ? $path : $this->getStorageSeparator() . $path;
         try {
-            return $this->storage->exists($path) && static::STORAGE_NODE_KEY !== $this->storage->read($path);
+            return $this->storage->exists($path) && static::STORAGE_NODE_KEY !== $this->toString($path, $this->storage->read($path));
         } catch (StorageException $ex) {
             throw new FilesException($this->getLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
