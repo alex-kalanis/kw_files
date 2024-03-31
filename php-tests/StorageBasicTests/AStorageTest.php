@@ -4,11 +4,10 @@ namespace StorageBasicTests;
 
 
 use CommonTestClass;
-use kalanis\kw_files\Interfaces\IProcessDirs;
-use kalanis\kw_files\Interfaces\IProcessFiles;
-use kalanis\kw_files\Interfaces\IProcessNodes;
+use kalanis\kw_files\Interfaces;
 use kalanis\kw_files\Processing\Storage\ProcessDir;
 use kalanis\kw_files\Processing\Storage\ProcessFile;
+use kalanis\kw_files\Processing\Storage\ProcessFileStream;
 use kalanis\kw_files\Processing\Storage\ProcessNode;
 use kalanis\kw_storage\Interfaces\ITarget;
 use kalanis\kw_storage\Storage\Key\StaticPrefixKey;
@@ -20,46 +19,64 @@ use Traversable;
 
 abstract class AStorageTest extends CommonTestClass
 {
-    protected function getNodeLib(): IProcessNodes
+    protected function getNodeLib(): Interfaces\IProcessNodes
     {
         StaticPrefixKey::setPrefix($this->getTestPath());
         return new ProcessNode(new Storage(new StaticPrefixKey(), $this->filledMemory()));
     }
 
-    protected function getNodeFailLib(): IProcessNodes
+    protected function getNodeFailLib(): Interfaces\IProcessNodes
     {
         StaticPrefixKey::setPrefix($this->getTestPath());
         return new ProcessNode(new XFailStorage(new StaticPrefixKey(), new Memory()));
     }
 
-    protected function getFileLib(): IProcessFiles
+    protected function getFileLib(): Interfaces\IProcessFiles
     {
         StaticPrefixKey::setPrefix($this->getTestPath());
         return new ProcessFile(new Storage(new StaticPrefixKey(), $this->filledMemory()));
     }
 
-    protected function getFileFailLib(): IProcessFiles
+    protected function getFileFailLib(): Interfaces\IProcessFiles
     {
         StaticPrefixKey::setPrefix($this->getTestPath());
         return new ProcessFile(new XFailStorage(new StaticPrefixKey(), new Memory()));
     }
 
-    protected function getDirLib(): IProcessDirs
+    protected function getDirLib(): Interfaces\IProcessDirs
     {
         StaticPrefixKey::setPrefix($this->getTestPath());
         return new ProcessDir(new Storage(new StaticPrefixKey(), $this->filledMemory()));
     }
 
-    protected function getDirFailLib(): IProcessDirs
+    protected function getDirFailLib(): Interfaces\IProcessDirs
     {
         StaticPrefixKey::setPrefix($this->getTestPath());
         return new ProcessDir(new XFailStorage(new StaticPrefixKey(), new Memory()));
     }
 
-    protected function getDirTreeLib(): IProcessDirs
+    protected function getDirTreeLib(): Interfaces\IProcessDirs
     {
         StaticPrefixKey::setPrefix('');
         return new ProcessDir(new Storage(new StaticPrefixKey(), $this->filledMemory()));
+    }
+
+    protected function getStreamLib(): Interfaces\IProcessFileStreams
+    {
+        StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessFileStream(new Storage(new StaticPrefixKey(), $this->filledMemory()));
+    }
+
+    protected function getStreamFailLib(): Interfaces\IProcessFileStreams
+    {
+        StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessFileStream(new XFailStorage(new StaticPrefixKey(), new Memory()));
+    }
+
+    protected function getStreamFailRemoveLib(): Interfaces\IProcessFileStreams
+    {
+        StaticPrefixKey::setPrefix($this->getTestPath());
+        return new ProcessFileStream(new XFailRemoveStorage(new StaticPrefixKey(), $this->filledMemory()));
     }
 
     protected function getStorageLib(): Storage
@@ -75,23 +92,21 @@ abstract class AStorageTest extends CommonTestClass
 
     protected function filledMemory(): ITarget
     {
-        $res = fopen('php://memory', 'r+');
-        fwrite($res, 'qwertzuiopasdfghjklyxcvbnm0123456789');
         $lib = new Memory();
-        $lib->save('', IProcessNodes::STORAGE_NODE_KEY); // root has empty file name - his name is defined by its mountpoint
-        $lib->save('' . DIRECTORY_SEPARATOR . 'data', IProcessNodes::STORAGE_NODE_KEY);
-        $lib->save('' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree', IProcessNodes::STORAGE_NODE_KEY);
-        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'last_one', IProcessNodes::STORAGE_NODE_KEY);
+        $lib->save('', Interfaces\IProcessNodes::STORAGE_NODE_KEY); // root has empty file name - his name is defined by its mountpoint
+        $lib->save('' . DIRECTORY_SEPARATOR . 'data', Interfaces\IProcessNodes::STORAGE_NODE_KEY);
+        $lib->save('' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree', Interfaces\IProcessNodes::STORAGE_NODE_KEY);
+        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'last_one', Interfaces\IProcessNodes::STORAGE_NODE_KEY);
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'last_one' . DIRECTORY_SEPARATOR . '.gitkeep', '');
-        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one', IProcessNodes::STORAGE_NODE_KEY);
-        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one' . DIRECTORY_SEPARATOR . 'sub_one', IProcessNodes::STORAGE_NODE_KEY);
+        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one', Interfaces\IProcessNodes::STORAGE_NODE_KEY);
+        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one' . DIRECTORY_SEPARATOR . 'sub_one', Interfaces\IProcessNodes::STORAGE_NODE_KEY);
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'next_one' . DIRECTORY_SEPARATOR . 'sub_one' . DIRECTORY_SEPARATOR . '.gitkeep', '');
-        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'sub', IProcessNodes::STORAGE_NODE_KEY);
+        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'sub', Interfaces\IProcessNodes::STORAGE_NODE_KEY);
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'sub' . DIRECTORY_SEPARATOR . 'dummy3.txt', 'qwertzuiopasdfghjklyxcvbnm0123456789');
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'sub' . DIRECTORY_SEPARATOR . 'dummy4.txt', false); // intentionally!!!
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'dummy1.txt', 'qwertzuiopasdfghjklyxcvbnm0123456789');
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'dummy2.txt', 'qwertzuiopasdfghjklyxcvbnm0123456789');
-        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'other1.txt', $res);
+        $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'other1.txt', 'qwertzuiopasdfghjklyxcvbnm0123456789');
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'other2.txt', 'qwertzuiopasdfghjklyxcvbnm0123456789');
         return $lib;
     }
@@ -105,7 +120,7 @@ class XFailStorage extends Storage
         throw new StorageException('mock');
     }
 
-    public function read(string $sharedKey)
+    public function read(string $sharedKey): string
     {
         throw new StorageException('mock');
     }
@@ -136,6 +151,15 @@ class XFailStorage extends Storage
     }
 
     public function removeMulti(array $keys): array
+    {
+        throw new StorageException('mock');
+    }
+}
+
+
+class XFailRemoveStorage extends Storage
+{
+    public function remove(string $sharedKey): bool
     {
         throw new StorageException('mock');
     }

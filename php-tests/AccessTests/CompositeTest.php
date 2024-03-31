@@ -8,6 +8,7 @@ use kalanis\kw_files\Access\CompositeAdapter;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IProcessDirs;
 use kalanis\kw_files\Interfaces\IProcessFiles;
+use kalanis\kw_files\Interfaces\IProcessFileStreams;
 use kalanis\kw_files\Interfaces\IProcessNodes;
 use kalanis\kw_paths\PathsException;
 
@@ -20,10 +21,11 @@ class CompositeTest extends CommonTestClass
      */
     public function testBasic(): void
     {
-        $lib = new CompositeAdapter(new XProcessNode(), new XProcessDir(), new XProcessFile());
+        $lib = new CompositeAdapter(new XProcessNode(), new XProcessDir(), new XProcessFile(), new XProcessStream());
         $this->assertInstanceOf(XProcessNode::class, $lib->getNode());
         $this->assertInstanceOf(XProcessDir::class, $lib->getDir());
         $this->assertInstanceOf(XProcessFile::class, $lib->getFile());
+        $this->assertInstanceOf(XProcessStream::class, $lib->getStream());
 
         $this->assertFalse($lib->exists([]));
         $this->assertFalse($lib->isReadable([]));
@@ -45,6 +47,11 @@ class CompositeTest extends CommonTestClass
         $this->assertTrue($lib->copyFile([], []));
         $this->assertTrue($lib->moveFile([], []));
         $this->assertTrue($lib->deleteFile([]));
+
+        $this->assertTrue($lib->saveFileStream([], fopen('php://memory', 'rb+')));
+        $this->assertNotEmpty($lib->readFileStream([]));
+        $this->assertTrue($lib->copyFileStream([], []));
+        $this->assertTrue($lib->moveFileStream([], []));
     }
 }
 
@@ -119,12 +126,12 @@ class XProcessDir implements IProcessDirs
 
 class XProcessFile implements IProcessFiles
 {
-    public function saveFile(array $entry, $content, ?int $offset = null): bool
+    public function saveFile(array $entry, $content, ?int $offset = null, int $mode = 0): bool
     {
         return true;
     }
 
-    public function readFile(array $entry, ?int $offset = null, ?int $length = null)
+    public function readFile(array $entry, ?int $offset = null, ?int $length = null): string
     {
         return '';
     }
@@ -145,3 +152,26 @@ class XProcessFile implements IProcessFiles
     }
 }
 
+
+class XProcessStream implements IProcessFileStreams
+{
+    public function saveFileStream(array $entry, $content, int $mode = 0): bool
+    {
+        return true;
+    }
+
+    public function readFileStream(array $entry)
+    {
+        return fopen('php://memory', 'rb+');
+    }
+
+    public function copyFileStream(array $source, array $dest): bool
+    {
+        return true;
+    }
+
+    public function moveFileStream(array $source, array $dest): bool
+    {
+        return true;
+    }
+}

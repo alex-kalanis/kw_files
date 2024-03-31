@@ -19,4 +19,17 @@ class CommonTestClass extends TestCase
     {
         return implode(DIRECTORY_SEPARATOR, $node->getPath());
     }
+
+    protected function streamToString($stream): string
+    {
+        rewind($stream);
+        return stream_get_contents($stream);
+    }
+
+    protected function stringToStream(string $content)
+    {
+        $handle = fopen('php://memory', 'rb+');
+        fwrite($handle, $content);
+        return $handle;
+    }
 }

@@ -14,11 +14,11 @@ class LangTest extends CommonTestClass
     public function testPass(): void
     {
         $lib = new XLang();
-        $lib->setLang(new XTrans());
-        $this->assertNotEmpty($lib->getLang());
-        $this->assertInstanceOf(XTrans::class, $lib->getLang());
-        $lib->setLang(null);
-        $this->assertInstanceOf(Translations::class, $lib->getLang());
+        $lib->setFlLang(new XTrans());
+        $this->assertNotEmpty($lib->getFlLang());
+        $this->assertInstanceOf(XTrans::class, $lib->getFlLang());
+        $lib->setFlLang(null);
+        $this->assertInstanceOf(Translations::class, $lib->getFlLang());
     }
 }
 
@@ -32,6 +32,11 @@ class XLang
 class XTrans implements IFLTranslations
 {
     public function flCannotProcessNode(string $name): string
+    {
+        return 'mock';
+    }
+
+    public function flBadMode(int $mode): string
     {
         return 'mock';
     }
@@ -122,6 +127,11 @@ class XTrans implements IFLTranslations
     }
 
     public function flNoProcessFileSet(): string
+    {
+        return 'mock';
+    }
+
+    public function flNoProcessStreamSet(): string
     {
         return 'mock';
     }

@@ -93,7 +93,7 @@ class XFailStorageDirs extends StorageDirs
         throw new StorageException('mock');
     }
 
-    public function read(string $sharedKey)
+    public function read(string $sharedKey): string
     {
         throw new StorageException('mock');
     }

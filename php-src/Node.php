@@ -19,10 +19,8 @@ class Node
 {
     /** @var array<string> */
     protected $path = [];
-    /** @var int */
-    protected $size = 0;
-    /** @var string */
-    protected $type = ITypes::TYPE_UNKNOWN;
+    protected int $size = 0;
+    protected string $type = ITypes::TYPE_UNKNOWN;
 
     /**
      * @param string[] $path only from wanted dir, not full path

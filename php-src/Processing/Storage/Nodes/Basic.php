@@ -19,13 +19,12 @@ class Basic extends ANodes
 {
     use TToString;
 
-    /** @var IStorage */
-    protected $storage = null;
+    protected IStorage $storage;
 
     public function __construct(IStorage $storage, ?IFLTranslations $lang = null)
     {
         $this->storage = $storage;
-        $this->setLang($lang);
+        $this->setFlLang($lang);
     }
 
     public function exists(array $entry): bool
@@ -35,7 +34,7 @@ class Basic extends ANodes
         try {
             return $this->storage->exists($path);
         } catch (StorageException $ex) {
-            throw new FilesException($this->getLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
+            throw new FilesException($this->getFlLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
     }
 
@@ -56,7 +55,7 @@ class Basic extends ANodes
         try {
             return $this->storage->exists($path) && static::STORAGE_NODE_KEY === $this->toString($path, $this->storage->read($path));
         } catch (StorageException $ex) {
-            throw new FilesException($this->getLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
+            throw new FilesException($this->getFlLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
     }
 
@@ -67,7 +66,7 @@ class Basic extends ANodes
         try {
             return $this->storage->exists($path) && static::STORAGE_NODE_KEY !== $this->toString($path, $this->storage->read($path));
         } catch (StorageException $ex) {
-            throw new FilesException($this->getLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
+            throw new FilesException($this->getFlLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
     }
 
@@ -78,28 +77,9 @@ class Basic extends ANodes
             if (!$this->storage->exists($path)) {
                 return null;
             }
-            $content = $this->storage->read($path);
-            if (is_resource($content)) {
-                // a bit workaround
-                $tempStream = fopen("php://temp", "w+b");
-                if (false === $tempStream) {
-                    // @codeCoverageIgnoreStart
-                    throw new FilesException($this->getLang()->flCannotLoadFile($path));
-                }
-                // @codeCoverageIgnoreEnd
-                rewind($content);
-                $size = stream_copy_to_stream($content, $tempStream, -1, 0);
-                if (false === $size) {
-                    // @codeCoverageIgnoreStart
-                    throw new FilesException($this->getLang()->flCannotGetSize($path));
-                }
-                // @codeCoverageIgnoreEnd
-                return abs(intval($size));
-            } else {
-                return strlen(strval($content));
-            }
+            return strlen($this->storage->read($path));
         } catch (StorageException $ex) {
-            throw new FilesException($this->getLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
+            throw new FilesException($this->getFlLang()->flCannotProcessNode($path), $ex->getCode(), $ex);
         }
     }
 
@@ -114,6 +94,6 @@ class Basic extends ANodes
      */
     protected function noDirectoryDelimiterSet(): string
     {
-        return $this->getLang()->flNoDirectoryDelimiterSet();
+        return $this->getFlLang()->flNoDirectoryDelimiterSet();
     }
 }

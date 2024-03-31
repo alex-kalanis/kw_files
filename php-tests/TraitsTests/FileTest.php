@@ -41,12 +41,12 @@ class XFile
 
 class XProcessFile implements IProcessFiles
 {
-    public function saveFile(array $entry, $content, ?int $offset = null): bool
+    public function saveFile(array $entry, string $content, ?int $offset = null, int $mode = 0): bool
     {
         return true;
     }
 
-    public function readFile(array $entry, ?int $offset = null, ?int $length = null)
+    public function readFile(array $entry, ?int $offset = null, ?int $length = null): string
     {
         return '';
     }

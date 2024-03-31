@@ -26,41 +26,11 @@ class FileTest extends AStorageTest
      * @throws FilesException
      * @throws PathsException
      */
-    public function testReadStream(): void
-    {
-        $lib = $this->getFileLib();
-        $this->assertEquals('qwertzuiopasdfghjklyxcvbnm0123456789', $this->streamToString($lib->readFile(['other1.txt'])));
-        $this->assertEquals('asdfghjklyxcvbnm0123456789', $this->streamToString($lib->readFile(['other1.txt'], 10)));
-        $this->assertEquals('asdfghjkly', $this->streamToString($lib->readFile(['other1.txt'], 10, 10)));
-        $this->assertEquals('qwertzuiop', $this->streamToString($lib->readFile(['other1.txt'], null, 10)));
-    }
-
-    protected function streamToString($stream): string
-    {
-        rewind($stream);
-        return stream_get_contents($stream);
-    }
-
-    /**
-     * @throws FilesException
-     * @throws PathsException
-     */
     public function testReadNonExist(): void
     {
         $lib = $this->getFileLib();
         $this->expectException(FilesException::class);
         $lib->readFile(['unknown']);
-    }
-
-    /**
-     * @throws FilesException
-     * @throws PathsException
-     */
-    public function testReadFalse(): void
-    {
-        $lib = $this->getFileLib();
-        $this->expectException(FilesException::class);
-        $lib->readFile(['sub', 'dummy4.txt']);
     }
 
     /**
