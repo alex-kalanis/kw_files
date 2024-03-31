@@ -9,7 +9,7 @@
     "license": "BSD-3-Clause",
     "type": "library",
     "require": {
-        "alex-kalanis/kw_paths": ">=3.0 <4",
+        "alex-kalanis/kw_paths": ">=4.0 <5",
         "alex-kalanis/kw_storage": ">=5.0 <6",
         "ext-mbstring": "*",
         "php": ">=7.4.0"
