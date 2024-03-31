@@ -92,16 +92,19 @@ class ProcessDir implements IProcessDirs
                 : new FilesystemIterator($path, 0)
             ;
             return array_values(
-                array_map(
-                    [$this, 'intoNode'],
-                    array_filter(
+                array_merge(
+                    $loadRecursive ? [] : [$this->addRootNode($path)],
+                    array_map(
+                        [$this, 'intoNode'],
                         array_filter(
                             array_filter(
-                                array_merge($loadRecursive ? [] : [$this->addRootNode($path)], iterator_to_array($iter))
+                                array_filter(
+                                    iterator_to_array($iter)
+                                ),
+                                [$this, 'filterFilesAndDirsOnly']
                             ),
-                            [$this, 'filterFilesAndDirsOnly']
-                        ),
-                        [$this, 'filterDots']
+                            [$this, 'filterDots']
+                        )
                     )
                 )
             );
@@ -112,9 +115,14 @@ class ProcessDir implements IProcessDirs
         // @codeCoverageIgnoreEnd
     }
 
-    protected function addRootNode(string $path): SplFileInfo
+    /**
+     * @param string $path
+     * @throws PathsException
+     * @return Node
+     */
+    protected function addRootNode(string $path): Node
     {
-        return new SplFileInfo($path);
+        return $this->intoNode(new SplFileInfo($path));
     }
 
     public function filterFilesAndDirsOnly(SplFileInfo $file): bool
