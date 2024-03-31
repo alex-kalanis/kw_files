@@ -33,6 +33,7 @@ class DirTest extends AVolume
     {
         $lib = $this->getDirLib();
         $subList = $lib->readDir([], false);
+print_r(['test', $subList]);
         usort($subList, [$this, 'sortingPaths']);
 
         $entry = reset($subList);
@@ -114,6 +115,7 @@ class DirTest extends AVolume
     {
         $lib = $this->getDirLib();
         $subList = $lib->readDir(['last_one'], false);
+print_r(['test', $subList]);
         $entry = reset($subList);
         /** @var Node $entry */
         $this->assertEquals([], $entry->getPath());
