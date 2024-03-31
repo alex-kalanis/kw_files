@@ -97,7 +97,7 @@ class ProcessDir implements IProcessDirs
                     array_filter(
                         array_filter(
                             array_filter(
-                                ($loadRecursive ? [] : [$this->addRootNode($path)]) + iterator_to_array($iter)
+                                array_merge($loadRecursive ? [] : [$this->addRootNode($path)], iterator_to_array($iter))
                             ),
                             [$this, 'filterFilesAndDirsOnly']
                         ),
