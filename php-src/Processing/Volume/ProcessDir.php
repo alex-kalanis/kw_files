@@ -93,7 +93,7 @@ class ProcessDir implements IProcessDirs
             ;
             return array_values(
                 array_merge(
-                    $loadRecursive ? [] : [$this->addRootNode($path)],
+                    $this->addRootNode($path),
                     array_map(
                         [$this, 'intoNode'],
                         array_filter(
@@ -118,11 +118,15 @@ class ProcessDir implements IProcessDirs
     /**
      * @param string $path
      * @throws PathsException
-     * @return Node
+     * @return Node[]
      */
-    protected function addRootNode(string $path): Node
+    protected function addRootNode(string $path): array
     {
-        return $this->intoNode(new SplFileInfo($path));
+        if (PHP_VERSION_ID >= 80200) {
+            // these versions pass root node in iterators implicitly
+            return [];
+        }
+        return [$this->intoNode(new SplFileInfo($path))];
     }
 
     public function filterFilesAndDirsOnly(SplFileInfo $file): bool
