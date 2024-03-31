@@ -18,7 +18,7 @@ use kalanis\kw_files\Interfaces\ITypes;
 class Node
 {
     /** @var array<string> */
-    protected $path = [];
+    protected array $path = [];
     protected int $size = 0;
     protected string $type = ITypes::TYPE_UNKNOWN;
 

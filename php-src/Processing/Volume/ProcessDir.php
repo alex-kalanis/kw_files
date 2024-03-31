@@ -37,10 +37,8 @@ class ProcessDir implements IProcessDirs
     use TSubPart;
     use TVolumeCopy;
 
-    /** @var int */
-    protected $sliceStartParts = 0;
-    /** @var int */
-    protected $sliceCustomParts = 0;
+    protected int $sliceStartParts = 0;
+    protected int $sliceCustomParts = 0;
 
     /**
      * @param string $path
