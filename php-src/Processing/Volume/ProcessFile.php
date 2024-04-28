@@ -75,7 +75,7 @@ class ProcessFile implements Interfaces\IProcessFiles, Interfaces\IProcessFileSt
         $path = $this->fullPath($entry);
         try {
             if (FILE_APPEND == $mode) {
-                if (file_exists($path)) {
+                if (@is_file($path)) {
                     $handler = @fopen($path, 'rb+');
                     if (false === $handler) {
                         // @codeCoverageIgnoreStart
