@@ -55,10 +55,8 @@ abstract class AFiles implements Interfaces\IProcessFiles
             if (!is_null($offset)) {
                 // put it somewhere, left the rest intact
                 $target = str_pad(substr($target, 0, $offset), $offset, "\0");
-                return $this->storage->write($path, $target . $content);
-            } else {
-                return $this->storage->write($path, $content);
             }
+            return $this->storage->write($path, $target . $content);
         } catch (StorageException $ex) {
             throw new FilesException($this->getFlLang()->flCannotSaveFile($path), $ex->getCode(), $ex);
         }
