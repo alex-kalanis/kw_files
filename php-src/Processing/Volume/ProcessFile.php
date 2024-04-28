@@ -77,6 +77,10 @@ class ProcessFile implements Interfaces\IProcessFiles, Interfaces\IProcessFileSt
             if (FILE_APPEND == $mode) {
                 if (file_exists($path)) {
                     $handler = @fopen($path, 'rb+');
+                    if (false === $handler) {
+                        // @codeCoverageIgnoreStart
+                        throw new FilesException($this->getFlLang()->flCannotOpenFile($path));
+                    }
                     @ftruncate($handler, intval($offset));
                     @fseek($handler, intval($offset));
                 } else {
