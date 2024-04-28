@@ -41,6 +41,7 @@ class FileTest extends AStorageTest
     {
         $lib = $this->getFileLib();
         $this->assertTrue($lib->saveFile(['extra.txt'], 'qwertzuiopasdfghjklyxcvbnm0123456789'));
+        $this->assertEquals('qwertzuiopasdfghjklyxcvbnm0123456789', $lib->readFile(['extra.txt']));
     }
 
     /**
@@ -52,7 +53,9 @@ class FileTest extends AStorageTest
     {
         $lib = $this->getFileLib();
         $this->assertTrue($lib->saveFile(['extra1.txt'], 'qwertzuiopasdfghjklyxcvbnm0123456789'));
-        $this->assertTrue($lib->saveFile(['extra1.txt'], '0123456789', 15));
+        $this->assertEquals('qwertzuiopasdfghjklyxcvbnm0123456789', $lib->readFile(['extra1.txt']));
+        $this->assertTrue($lib->saveFile(['extra1.txt'], '0123456789', 15, FILE_APPEND));
+        $this->assertEquals('qwertzuiopasdfg0123456789', $lib->readFile(['extra1.txt']));
     }
 
     /**
@@ -64,6 +67,7 @@ class FileTest extends AStorageTest
     {
         $lib = $this->getFileLib();
         $this->assertTrue($lib->saveFile(['extra2.txt'], 'qwertzuiopasdfgh01234567890123456789', 5));
+        $this->assertEquals("\0\0\0\0\0" . 'qwertzuiopasdfgh01234567890123456789', $lib->readFile(['extra2.txt']));
     }
 
     /**

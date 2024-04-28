@@ -5,6 +5,7 @@ namespace kalanis\kw_files\Processing\Storage\Files;
 
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces;
+use kalanis\kw_files\Traits\TCheckModes;
 use kalanis\kw_files\Traits\TLang;
 use kalanis\kw_paths\ArrayPath;
 use kalanis\kw_paths\Extras\TPathTransform;
@@ -19,6 +20,7 @@ use kalanis\kw_storage\StorageException;
  */
 abstract class AFiles implements Interfaces\IProcessFiles
 {
+    use TCheckModes;
     use TLang;
     use TPathTransform;
 
@@ -32,6 +34,7 @@ abstract class AFiles implements Interfaces\IProcessFiles
 
     public function saveFile(array $targetName, string $content, ?int $offset = null, int $mode = 0): bool
     {
+        $this->checkSupportedModes($mode);
         $path = $this->getStorageSeparator() . $this->filledName($this->compactName($targetName, $this->getStorageSeparator()));
         try {
             $dstArr = new ArrayPath();
@@ -42,13 +45,15 @@ abstract class AFiles implements Interfaces\IProcessFiles
                 throw new FilesException($this->getFlLang()->flCannotSaveFile($path));
             }
 
-            if (!is_null($offset)) {
-                // put it somewhere, left the rest intact
+            $target = '';
+            if (FILE_APPEND == $mode) {
                 if ($this->storage->exists($path)) {
                     $target = $this->storage->read($path);
-                } else {
-                    $target = '';
                 }
+            }
+
+            if (!is_null($offset)) {
+                // put it somewhere, left the rest intact
                 $target = str_pad(substr($target, 0, $offset), $offset, "\0");
                 return $this->storage->write($path, $target . $content);
             } else {
