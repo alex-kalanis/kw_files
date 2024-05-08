@@ -56,6 +56,8 @@ class FileTest extends AStorageTest
         $this->assertEquals('qwertzuiopasdfghjklyxcvbnm0123456789', $lib->readFile(['extra1.txt']));
         $this->assertTrue($lib->saveFile(['extra1.txt'], '0123456789', 15, FILE_APPEND));
         $this->assertEquals('qwertzuiopasdfg0123456789', $lib->readFile(['extra1.txt']));
+        $this->assertTrue($lib->saveFile(['extra1.txt'], 'mnbvcxy', null, FILE_APPEND));
+        $this->assertEquals('qwertzuiopasdfg0123456789mnbvcxy', $lib->readFile(['extra1.txt']));
     }
 
     /**
