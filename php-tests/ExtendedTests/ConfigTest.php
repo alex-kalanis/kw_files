@@ -1,9 +1,9 @@
 <?php
 
-namespace ExtendedTests;
+namespace tests\ExtendedTests;
 
 
-use CommonTestClass;
+use tests\CommonTestClass;
 use kalanis\kw_files\Extended\Config;
 
 

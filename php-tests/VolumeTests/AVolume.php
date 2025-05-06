@@ -1,9 +1,9 @@
 <?php
 
-namespace VolumeTests;
+namespace tests\VolumeTests;
 
 
-use CommonTestClass;
+use tests\CommonTestClass;
 use kalanis\kw_files\Interfaces\IProcessDirs;
 use kalanis\kw_files\Processing\Volume\ProcessDir;
 use kalanis\kw_paths\PathsException;

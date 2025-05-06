@@ -3,6 +3,7 @@
 namespace kalanis\kw_files\Interfaces;
 
 
+use DateTimeInterface;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_paths\PathsException;
 
@@ -68,7 +69,7 @@ interface IProcessNodes
      * @param string[] $entry
      * @throws FilesException
      * @throws PathsException
-     * @return int|null
+     * @return DateTimeInterface|null
      */
-    public function created(array $entry): ?int;
+    public function created(array $entry): ?DateTimeInterface;
 }

@@ -1,20 +1,18 @@
 <?php
 
-namespace StorageBasicTests;
+namespace tests\StorageBasicTests;
 
 
-use CommonTestClass;
+use tests\CommonTestClass;
 use kalanis\kw_files\Interfaces;
 use kalanis\kw_files\Processing\Storage\ProcessDir;
 use kalanis\kw_files\Processing\Storage\ProcessFile;
 use kalanis\kw_files\Processing\Storage\ProcessFileStream;
 use kalanis\kw_files\Processing\Storage\ProcessNode;
-use kalanis\kw_storage\Interfaces\ITarget;
+use kalanis\kw_storage\Interfaces\Target\ITarget;
 use kalanis\kw_storage\Storage\Key\StaticPrefixKey;
 use kalanis\kw_storage\Storage\Storage;
 use kalanis\kw_storage\Storage\Target\Memory;
-use kalanis\kw_storage\StorageException;
-use Traversable;
 
 
 abstract class AStorageTest extends CommonTestClass
@@ -109,58 +107,5 @@ abstract class AStorageTest extends CommonTestClass
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'other1.txt', 'qwertzuiopasdfghjklyxcvbnm0123456789');
         $lib->save(DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'tree' . DIRECTORY_SEPARATOR . 'other2.txt', 'qwertzuiopasdfghjklyxcvbnm0123456789');
         return $lib;
-    }
-}
-
-
-class XFailStorage extends Storage
-{
-    public function write(string $sharedKey, $data, ?int $timeout = null): bool
-    {
-        throw new StorageException('mock');
-    }
-
-    public function read(string $sharedKey): string
-    {
-        throw new StorageException('mock');
-    }
-
-    public function remove(string $sharedKey): bool
-    {
-        throw new StorageException('mock');
-    }
-
-    public function exists(string $sharedKey): bool
-    {
-        throw new StorageException('mock');
-    }
-
-    public function lookup(string $mask): Traversable
-    {
-        throw new StorageException('mock');
-    }
-
-    public function increment(string $key): bool
-    {
-        throw new StorageException('mock');
-    }
-
-    public function decrement(string $key): bool
-    {
-        throw new StorageException('mock');
-    }
-
-    public function removeMulti(array $keys): array
-    {
-        throw new StorageException('mock');
-    }
-}
-
-
-class XFailRemoveStorage extends Storage
-{
-    public function remove(string $sharedKey): bool
-    {
-        throw new StorageException('mock');
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
-namespace ProcessingTests;
+namespace tests\ProcessingTests;
 
 
-use CommonTestClass;
-use kalanis\kw_files\Processing\TPath;
+use tests\CommonTestClass;
 
 
 class PathTest extends CommonTestClass
@@ -36,10 +35,4 @@ class PathTest extends CommonTestClass
             [['', ], '', ],
         ];
     }
-}
-
-
-class XPath
-{
-    use TPath;
 }

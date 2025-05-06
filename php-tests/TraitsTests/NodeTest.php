@@ -1,12 +1,10 @@
 <?php
 
-namespace TraitsTests;
+namespace tests\TraitsTests;
 
 
-use CommonTestClass;
+use tests\CommonTestClass;
 use kalanis\kw_files\FilesException;
-use kalanis\kw_files\Interfaces\IProcessNodes;
-use kalanis\kw_files\Traits\TNode;
 
 
 class NodeTest extends CommonTestClass
@@ -29,50 +27,5 @@ class NodeTest extends CommonTestClass
         $lib = new XNode();
         $this->expectException(FilesException::class);
         $lib->getProcessNode();
-    }
-}
-
-
-class XNode
-{
-    use TNode;
-}
-
-
-class XProcessNode implements IProcessNodes
-{
-    public function exists(array $entry): bool
-    {
-        return false;
-    }
-
-    public function isReadable(array $entry): bool
-    {
-        return false;
-    }
-
-    public function isWritable(array $entry): bool
-    {
-        return false;
-    }
-
-    public function isDir(array $entry): bool
-    {
-        return false;
-    }
-
-    public function isFile(array $entry): bool
-    {
-        return false;
-    }
-
-    public function size(array $entry): ?int
-    {
-        return null;
-    }
-
-    public function created(array $entry): ?int
-    {
-        return null;
     }
 }

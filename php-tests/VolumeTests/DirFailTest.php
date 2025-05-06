@@ -1,6 +1,6 @@
 <?php
 
-namespace VolumeTests;
+namespace tests\VolumeTests;
 
 
 use kalanis\kw_files\FilesException;

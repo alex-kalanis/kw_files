@@ -1,10 +1,9 @@
 <?php
 
-namespace ExtendedTests;
+namespace tests\ExtendedTests;
 
 
-use CommonTestClass;
-use kalanis\kw_files\Access\Factory;
+use tests\CommonTestClass;
 use kalanis\kw_files\Extended\Config;
 use kalanis\kw_files\Extended\Processor;
 use kalanis\kw_files\FilesException;
@@ -107,14 +106,5 @@ class ProcessorTest extends CommonTestClass
         $this->assertTrue($lib->createDir(['meek']));
         $this->assertTrue($access->saveFile(['meek', $config->getDescDir()], 'abcdef'));
         $this->assertFalse($lib->removeExtended(['meek']));
-    }
-}
-
-
-class XAccessFactory extends Factory
-{
-    public static function init(): self
-    {
-        return new self();
     }
 }

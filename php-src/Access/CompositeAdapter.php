@@ -3,6 +3,7 @@
 namespace kalanis\kw_files\Access;
 
 
+use DateTimeInterface;
 use kalanis\kw_files\Interfaces;
 
 
@@ -131,7 +132,7 @@ class CompositeAdapter implements Interfaces\IProcessNodes, Interfaces\IProcessD
         return $this->libNode->size($entry);
     }
 
-    public function created(array $entry): ?int
+    public function created(array $entry): ?DateTimeInterface
     {
         return $this->libNode->created($entry);
     }

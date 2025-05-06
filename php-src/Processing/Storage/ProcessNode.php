@@ -3,6 +3,7 @@
 namespace kalanis\kw_files\Processing\Storage;
 
 
+use DateTimeInterface;
 use kalanis\kw_files\Interfaces\IFLTranslations;
 use kalanis\kw_files\Interfaces\IProcessNodes;
 use kalanis\kw_storage\Interfaces\IStorage;
@@ -53,7 +54,7 @@ class ProcessNode implements IProcessNodes
         return $this->adapter->size($entry);
     }
 
-    public function created(array $entry): ?int
+    public function created(array $entry): ?DateTimeInterface
     {
         return $this->adapter->created($entry);
     }

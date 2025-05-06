@@ -1,13 +1,13 @@
 <?php
 
-namespace TraitsTests;
+namespace tests\TraitsTests;
 
 
+use tests\CommonTestClass;
 use kalanis\kw_files\FilesException;
-use kalanis\kw_files\Traits\TToStream;
 
 
-class ToStreamTest extends \CommonTestClass
+class ToStreamTest extends CommonTestClass
 {
     /**
      * @param mixed $ext
@@ -55,30 +55,5 @@ class ToStreamTest extends \CommonTestClass
             [false],
             [null],
         ];
-    }
-}
-
-
-class XToStream
-{
-    use TToStream;
-
-    /**
-     * @param mixed $content
-     * @throws FilesException
-     * @return resource
-     */
-    public function toStr($content)
-    {
-        return $this->toStream('test', $content);
-    }
-}
-
-
-class StrObj2
-{
-    public function __toString(): string
-    {
-        return 'test';
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
-namespace TraitsTests;
+namespace tests\TraitsTests;
 
 
-use CommonTestClass;
-use kalanis\kw_files\Traits\TSubPart;
+use tests\CommonTestClass;
 
 
 class SubPartTest extends CommonTestClass
@@ -34,16 +33,5 @@ class SubPartTest extends CommonTestClass
             [['foo', 'bar'], ['foo', 'baz'], false],
             [['foo', 'bar', 'baz'], ['foo', 'baz'], false],
         ];
-    }
-}
-
-
-class XSubPart
-{
-    use TSubPart;
-
-    public function is(array $what, array $in): bool
-    {
-        return $this->isSubPart($what, $in);
     }
 }

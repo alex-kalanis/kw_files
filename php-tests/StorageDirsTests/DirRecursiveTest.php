@@ -1,6 +1,6 @@
 <?php
 
-namespace StorageDirsTests;
+namespace tests\StorageDirsTests;
 
 
 use kalanis\kw_files\FilesException;

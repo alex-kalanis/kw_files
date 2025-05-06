@@ -1,9 +1,10 @@
 <?php
 
-namespace ProcessingTests;
+namespace tests\ProcessingTests;
 
 
-use CommonTestClass;
+use tests\CommonTestClass;
+use DateTimeInterface;
 use kalanis\kw_files\Extended\FindFreeName;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IProcessNodes;
@@ -73,70 +74,5 @@ class FinderTest extends CommonTestClass
             // already exists - more examples
             [['wsx', 'wsx--#0', 'wsx--#1', ], [], 'wsx', 'wsx--#2', ],
         ];
-    }
-}
-
-
-class XFindFreeName extends FindFreeName
-{
-    protected function getNameSeparator(): string
-    {
-        return '--#';
-    }
-}
-
-
-class XNameFinder implements IProcessNodes
-{
-    use TPathTransform;
-
-    protected $knownNames;
-
-    /**
-     * @param array<string> $knownNames
-     */
-    public function __construct(array $knownNames)
-    {
-        $this->knownNames = $knownNames;
-    }
-
-    public function exists(array $entry): bool
-    {
-        return in_array($this->compactName($entry), $this->knownNames);
-    }
-
-    public function isReadable(array $entry): bool
-    {
-        return false;
-    }
-
-    public function isWritable(array $entry): bool
-    {
-        return false;
-    }
-
-    public function isDir(array $entry): bool
-    {
-        return false;
-    }
-
-    public function isFile(array $entry): bool
-    {
-        return false;
-    }
-
-    public function size(array $entry): ?int
-    {
-        return null;
-    }
-
-    public function created(array $entry): ?int
-    {
-        return null;
-    }
-
-    protected function noDirectoryDelimiterSet(): string
-    {
-        return 'mock no dir';
     }
 }

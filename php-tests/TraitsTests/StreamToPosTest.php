@@ -1,13 +1,13 @@
 <?php
 
-namespace TraitsTests;
+namespace tests\TraitsTests;
 
 
+use tests\CommonTestClass;
 use kalanis\kw_files\FilesException;
-use kalanis\kw_files\Traits\TStreamToPos;
 
 
-class StreamToPosTest extends \CommonTestClass
+class StreamToPosTest extends CommonTestClass
 {
     /**
      * @param string $original
@@ -46,10 +46,4 @@ class StreamToPosTest extends \CommonTestClass
             ['abcdefghijklmnopqrstuvwxy', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 30, "abcdefghijklmnopqrstuvwxy\0\0\0\0\0ABCDEFGHIJKLMNOPQRSTUVWXYZ"], // append at the end
         ];
     }
-}
-
-
-class XToPos
-{
-    use TStreamToPos;
 }

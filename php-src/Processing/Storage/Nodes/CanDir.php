@@ -3,6 +3,7 @@
 namespace kalanis\kw_files\Processing\Storage\Nodes;
 
 
+use DateTimeInterface;
 use kalanis\kw_files\FilesException;
 use kalanis\kw_files\Interfaces\IFLTranslations;
 use kalanis\kw_storage\Interfaces\IPassDirs;
@@ -84,7 +85,7 @@ class CanDir extends ANodes
         }
     }
 
-    public function created(array $entry): ?int
+    public function created(array $entry): ?DateTimeInterface
     {
         $path = $this->getStorageSeparator() . $this->compactName($entry, $this->getStorageSeparator());
         try {

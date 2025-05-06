@@ -1,13 +1,13 @@
 <?php
 
-namespace TraitsTests;
+namespace tests\TraitsTests;
 
 
+use tests\CommonTestClass;
 use kalanis\kw_files\FilesException;
-use kalanis\kw_files\Traits\TToString;
 
 
-class ToStringTest extends \CommonTestClass
+class ToStringTest extends CommonTestClass
 {
     /**
      * @param mixed $ext
@@ -54,30 +54,5 @@ class ToStringTest extends \CommonTestClass
             [false],
             [null],
         ];
-    }
-}
-
-
-class XToString
-{
-    use TToString;
-
-    /**
-     * @param mixed $content
-     * @throws FilesException
-     * @return string
-     */
-    public function toStr($content): string
-    {
-        return $this->toString('test', $content);
-    }
-}
-
-
-class StrObj
-{
-    public function __toString(): string
-    {
-        return 'test';
     }
 }

@@ -3,6 +3,7 @@
 namespace kalanis\kw_files\Processing\Volume;
 
 
+use DateTimeInterface;
 use kalanis\kw_files\Interfaces\IFLTranslations;
 use kalanis\kw_files\Interfaces\IProcessNodes;
 use kalanis\kw_files\Processing\TPath;
@@ -60,11 +61,12 @@ class ProcessNode implements IProcessNodes
         return (false === $size) ? null : $size;
     }
 
-    public function created(array $entry): ?int
+    public function created(array $entry): ?DateTimeInterface
     {
         $path = $this->fullPath($entry);
         $created = @filemtime($path);
-        return (false === $created) ? null : $created;
+        $dateObj = (false === $created) ? false : date_create_immutable('@' . $created);
+        return (false === $dateObj) ? null : $dateObj;
     }
 
     /**
